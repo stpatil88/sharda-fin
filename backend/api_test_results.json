@@ -1,0 +1,58 @@
+[
+  {
+    "test": "Server Health Check",
+    "success": true,
+    "message": "Server is healthy - Sharada Financial API",
+    "timestamp": "2025-10-25T12:49:36.227353",
+    "response_data": null
+  },
+  {
+    "test": "Root Endpoint",
+    "success": true,
+    "message": "API Version: 1.0.0",
+    "timestamp": "2025-10-25T12:49:36.240104",
+    "response_data": null
+  },
+  {
+    "test": "Market News Endpoint",
+    "success": true,
+    "message": "Fetched 20 articles",
+    "timestamp": "2025-10-25T12:49:38.659704",
+    "response_data": null
+  },
+  {
+    "test": "Market News with Limit",
+    "success": true,
+    "message": "Fetched 5 articles (limit: 5)",
+    "timestamp": "2025-10-25T12:49:40.134745",
+    "response_data": null
+  },
+  {
+    "test": "Latest Summaries Endpoint",
+    "success": true,
+    "message": "Generated 10 summaries",
+    "timestamp": "2025-10-25T12:50:06.316340",
+    "response_data": null
+  },
+  {
+    "test": "Latest Summaries with Limit",
+    "success": true,
+    "message": "Generated 3 summaries (limit: 3)",
+    "timestamp": "2025-10-25T12:50:13.276914",
+    "response_data": null
+  },
+  {
+    "test": "Invalid Endpoint (404)",
+    "success": false,
+    "message": "Expected 404, got 405",
+    "timestamp": "2025-10-25T12:50:13.280553",
+    "response_data": null
+  },
+  {
+    "test": "CORS Headers",
+    "success": false,
+    "message": "No CORS headers found. Available headers: ['date', 'server', 'content-length', 'content-type']",
+    "timestamp": "2025-10-25T12:50:13.288845",
+    "response_data": null
+  }
+]
