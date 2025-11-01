@@ -8,7 +8,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
-from angel_one_api import angel_api
+# from angel_one_api import angel_api
 
 def get_nifty_news(limit: int = 10) -> List[Dict]:
     """

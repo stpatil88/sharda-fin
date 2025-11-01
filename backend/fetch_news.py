@@ -4,7 +4,10 @@ import requests
 import json
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
+import dotenv
 
+dotenv.load_dotenv()
+print(os.getenv("FINNHUB_API_KEY"))
 API_KEY = os.getenv("FINNHUB_API_KEY")
 
 def fetch_market_news(category: str = "general", limit: int = 50) -> List[Dict]:
@@ -23,8 +26,9 @@ def fetch_market_news(category: str = "general", limit: int = 50) -> List[Dict]:
     
     url = "https://finnhub.io/api/v1/news"
     params = {
-        "category": category,
-        "token": API_KEY
+        "category": 'busines',
+        "token": API_KEY,
+        'country': 'in'
     }
     
     try:
@@ -119,6 +123,13 @@ if __name__ == "__main__":
     # Test the functions
     print("Testing news fetch...")
     articles = fetch_market_news()
+
+    print(f"Fetched {len(articles)} articles")
+    if articles:
+        print("Sample article:")
+        print(json.dumps(articles[0], indent=2))
+    articles = fetch_company_news("AAPL")
+
     print(f"Fetched {len(articles)} articles")
     if articles:
         print("Sample article:")

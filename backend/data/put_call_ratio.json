@@ -1,0 +1,862 @@
+{
+  "status": "ok",
+  "exchange": "NSE",
+  "data": [
+    {
+      "pcr": 0.75,
+      "tradingSymbol": "325NOV2525NOV25FUT"
+    },
+    {
+      "pcr": 0.34,
+      "tradingSymbol": "ABB25NOV25FUT"
+    },
+    {
+      "pcr": 0.46,
+      "tradingSymbol": "ABCAPITAL25NOV25FUT"
+    },
+    {
+      "pcr": 0.27,
+      "tradingSymbol": "ADANIENSOL25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "ADANIENT25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "ADANIGREEN25NOV25FUT"
+    },
+    {
+      "pcr": 0.36,
+      "tradingSymbol": "ADANIPORTS25NOV25FUT"
+    },
+    {
+      "pcr": 0.66,
+      "tradingSymbol": "ALKEM25NOV25FUT"
+    },
+    {
+      "pcr": 0.21,
+      "tradingSymbol": "AMBER25NOV25FUT"
+    },
+    {
+      "pcr": 0.35,
+      "tradingSymbol": "AMBUJACEM25NOV25FUT"
+    },
+    {
+      "pcr": 0.85,
+      "tradingSymbol": "ANGELONE25NOV25FUT"
+    },
+    {
+      "pcr": 0.32,
+      "tradingSymbol": "APLAPOLLO25NOV25FUT"
+    },
+    {
+      "pcr": 0.44,
+      "tradingSymbol": "APOLLOHOSP25NOV25FUT"
+    },
+    {
+      "pcr": 0.36,
+      "tradingSymbol": "ASHOKLEY25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "ASIANPAINT25NOV25FUT"
+    },
+    {
+      "pcr": 0.44,
+      "tradingSymbol": "ASTRAL25NOV25FUT"
+    },
+    {
+      "pcr": 0.75,
+      "tradingSymbol": "AUBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.57,
+      "tradingSymbol": "AUROPHARMA25NOV25FUT"
+    },
+    {
+      "pcr": 0.68,
+      "tradingSymbol": "AXISBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.86,
+      "tradingSymbol": "BAJAJ-AUTO25NOV25FUT"
+    },
+    {
+      "pcr": 0.69,
+      "tradingSymbol": "BAJAJFINSV25NOV25FUT"
+    },
+    {
+      "pcr": 0.78,
+      "tradingSymbol": "BAJFINANCE25NOV25FUT"
+    },
+    {
+      "pcr": 0.63,
+      "tradingSymbol": "BANDHANBNK25NOV25FUT"
+    },
+    {
+      "pcr": 0.48,
+      "tradingSymbol": "BANKBARODA25NOV25FUT"
+    },
+    {
+      "pcr": 0.49,
+      "tradingSymbol": "BANKINDIA25NOV25FUT"
+    },
+    {
+      "pcr": 0.87,
+      "tradingSymbol": "BANKNIFTY25NOV25FUT"
+    },
+    {
+      "pcr": 0.39,
+      "tradingSymbol": "BDL25NOV25FUT"
+    },
+    {
+      "pcr": 0.54,
+      "tradingSymbol": "BEL25NOV25FUT"
+    },
+    {
+      "pcr": 0.32,
+      "tradingSymbol": "BHARATFORG25NOV25FUT"
+    },
+    {
+      "pcr": 0.72,
+      "tradingSymbol": "BHARTIARTL25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "BHEL25NOV25FUT"
+    },
+    {
+      "pcr": 0.3,
+      "tradingSymbol": "BIOCON25NOV25FUT"
+    },
+    {
+      "pcr": 0.35,
+      "tradingSymbol": "BLUESTARCO25NOV25FUT"
+    },
+    {
+      "pcr": 0.52,
+      "tradingSymbol": "BOSCHLTD25NOV25FUT"
+    },
+    {
+      "pcr": 0.42,
+      "tradingSymbol": "BPCL25NOV25FUT"
+    },
+    {
+      "pcr": 0.39,
+      "tradingSymbol": "BRITANNIA25NOV25FUT"
+    },
+    {
+      "pcr": 0.73,
+      "tradingSymbol": "BSE25NOV25FUT"
+    },
+    {
+      "pcr": 0.64,
+      "tradingSymbol": "CAMS25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "CANBK25NOV25FUT"
+    },
+    {
+      "pcr": 0.54,
+      "tradingSymbol": "CDSL25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "CGPOWER25NOV25FUT"
+    },
+    {
+      "pcr": 0.58,
+      "tradingSymbol": "CHOLAFIN25NOV25FUT"
+    },
+    {
+      "pcr": 0.39,
+      "tradingSymbol": "CIPLA25NOV25FUT"
+    },
+    {
+      "pcr": 0.65,
+      "tradingSymbol": "COALINDIA25NOV25FUT"
+    },
+    {
+      "pcr": 0.46,
+      "tradingSymbol": "COFORGE25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "COLPAL25NOV25FUT"
+    },
+    {
+      "pcr": 0.33,
+      "tradingSymbol": "CONCOR25NOV25FUT"
+    },
+    {
+      "pcr": 0.21,
+      "tradingSymbol": "CROMPTON25NOV25FUT"
+    },
+    {
+      "pcr": 0.48,
+      "tradingSymbol": "CUMMINSIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.34,
+      "tradingSymbol": "CYIENT25NOV25FUT"
+    },
+    {
+      "pcr": 0.52,
+      "tradingSymbol": "DABUR25NOV25FUT"
+    },
+    {
+      "pcr": 0.51,
+      "tradingSymbol": "DALBHARAT25NOV25FUT"
+    },
+    {
+      "pcr": 0.38,
+      "tradingSymbol": "DELHIVERY25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "DIVISLAB25NOV25FUT"
+    },
+    {
+      "pcr": 0.43,
+      "tradingSymbol": "DIXON25NOV25FUT"
+    },
+    {
+      "pcr": 0.36,
+      "tradingSymbol": "DLF25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "DMART25NOV25FUT"
+    },
+    {
+      "pcr": 0.7,
+      "tradingSymbol": "DRREDDY25NOV25FUT"
+    },
+    {
+      "pcr": 1.11,
+      "tradingSymbol": "EICHERMOT25NOV25FUT"
+    },
+    {
+      "pcr": 0.58,
+      "tradingSymbol": "ETERNAL25NOV25FUT"
+    },
+    {
+      "pcr": 0.77,
+      "tradingSymbol": "EXIDEIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.7,
+      "tradingSymbol": "FEDERALBNK25NOV25FUT"
+    },
+    {
+      "pcr": 0.56,
+      "tradingSymbol": "FINNIFTY25NOV25FUT"
+    },
+    {
+      "pcr": 0.63,
+      "tradingSymbol": "FORTIS25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "GAIL25NOV25FUT"
+    },
+    {
+      "pcr": 0.39,
+      "tradingSymbol": "GLENMARK25NOV25FUT"
+    },
+    {
+      "pcr": 0.39,
+      "tradingSymbol": "GMRAIRPORT25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "GODREJCP25NOV25FUT"
+    },
+    {
+      "pcr": 0.55,
+      "tradingSymbol": "GODREJPROP25NOV25FUT"
+    },
+    {
+      "pcr": 0.33,
+      "tradingSymbol": "GRASIM25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "HAL25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "HAVELLS25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "HCLTECH25NOV25FUT"
+    },
+    {
+      "pcr": 0.8,
+      "tradingSymbol": "HDFCAMC25NOV25FUT"
+    },
+    {
+      "pcr": 0.75,
+      "tradingSymbol": "HDFCBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.36,
+      "tradingSymbol": "HDFCLIFE25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "HEROMOTOCO25NOV25FUT"
+    },
+    {
+      "pcr": 0.48,
+      "tradingSymbol": "HFCL25NOV25FUT"
+    },
+    {
+      "pcr": 0.68,
+      "tradingSymbol": "HINDALCO25NOV25FUT"
+    },
+    {
+      "pcr": 0.38,
+      "tradingSymbol": "HINDPETRO25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "HINDUNILVR25NOV25FUT"
+    },
+    {
+      "pcr": 0.27,
+      "tradingSymbol": "HINDZINC25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "HUDCO25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "ICICIBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.25,
+      "tradingSymbol": "ICICIGI25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "ICICIPRULI25NOV25FUT"
+    },
+    {
+      "pcr": 0.21,
+      "tradingSymbol": "IDEA25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "IDFCFIRSTB25NOV25FUT"
+    },
+    {
+      "pcr": 0.39,
+      "tradingSymbol": "IEX25NOV25FUT"
+    },
+    {
+      "pcr": 0.58,
+      "tradingSymbol": "IGL25NOV25FUT"
+    },
+    {
+      "pcr": 0.33,
+      "tradingSymbol": "IIFL25NOV25FUT"
+    },
+    {
+      "pcr": 0.84,
+      "tradingSymbol": "INDHOTEL25NOV25FUT"
+    },
+    {
+      "pcr": 0.53,
+      "tradingSymbol": "INDIANB25NOV25FUT"
+    },
+    {
+      "pcr": 0.69,
+      "tradingSymbol": "INDIGO25NOV25FUT"
+    },
+    {
+      "pcr": 0.54,
+      "tradingSymbol": "INDUSINDBK25NOV25FUT"
+    },
+    {
+      "pcr": 0.49,
+      "tradingSymbol": "INDUSTOWER25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "INFY25NOV25FUT"
+    },
+    {
+      "pcr": 0.21,
+      "tradingSymbol": "INOXWIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.52,
+      "tradingSymbol": "IOC25NOV25FUT"
+    },
+    {
+      "pcr": 0.28,
+      "tradingSymbol": "IRCTC25NOV25FUT"
+    },
+    {
+      "pcr": 0.3,
+      "tradingSymbol": "IREDA25NOV25FUT"
+    },
+    {
+      "pcr": 0.46,
+      "tradingSymbol": "IRFC25NOV25FUT"
+    },
+    {
+      "pcr": 0.53,
+      "tradingSymbol": "ITC25NOV25FUT"
+    },
+    {
+      "pcr": 0.71,
+      "tradingSymbol": "JINDALSTEL25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "JIOFIN25NOV25FUT"
+    },
+    {
+      "pcr": 0.32,
+      "tradingSymbol": "JSWENERGY25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "JSWSTEEL25NOV25FUT"
+    },
+    {
+      "pcr": 0.46,
+      "tradingSymbol": "JUBLFOOD25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "KALYANKJIL25NOV25FUT"
+    },
+    {
+      "pcr": 0.39,
+      "tradingSymbol": "KAYNES25NOV25FUT"
+    },
+    {
+      "pcr": 0.31,
+      "tradingSymbol": "KEI25NOV25FUT"
+    },
+    {
+      "pcr": 0.43,
+      "tradingSymbol": "KFINTECH25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "KOTAKBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "KPITTECH25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "LAURUSLABS25NOV25FUT"
+    },
+    {
+      "pcr": 0.37,
+      "tradingSymbol": "LICHSGFIN25NOV25FUT"
+    },
+    {
+      "pcr": 0.33,
+      "tradingSymbol": "LICI25NOV25FUT"
+    },
+    {
+      "pcr": 0.48,
+      "tradingSymbol": "LODHA25NOV25FUT"
+    },
+    {
+      "pcr": 0.52,
+      "tradingSymbol": "LT25NOV25FUT"
+    },
+    {
+      "pcr": 0.64,
+      "tradingSymbol": "LTF25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "LTIM25NOV25FUT"
+    },
+    {
+      "pcr": 0.64,
+      "tradingSymbol": "LUPIN25NOV25FUT"
+    },
+    {
+      "pcr": 0.66,
+      "tradingSymbol": "M&M25NOV25FUT"
+    },
+    {
+      "pcr": 0.54,
+      "tradingSymbol": "MANAPPURAM25NOV25FUT"
+    },
+    {
+      "pcr": 0.3,
+      "tradingSymbol": "MANKIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.7,
+      "tradingSymbol": "MARICO25NOV25FUT"
+    },
+    {
+      "pcr": 0.92,
+      "tradingSymbol": "MARUTI25NOV25FUT"
+    },
+    {
+      "pcr": 0.32,
+      "tradingSymbol": "MAXHEALTH25NOV25FUT"
+    },
+    {
+      "pcr": 0.27,
+      "tradingSymbol": "MAZDOCK25NOV25FUT"
+    },
+    {
+      "pcr": 0.85,
+      "tradingSymbol": "MCX25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "MFSL25NOV25FUT"
+    },
+    {
+      "pcr": 0.86,
+      "tradingSymbol": "MIDCPNIFTY25NOV25FUT"
+    },
+    {
+      "pcr": 0.37,
+      "tradingSymbol": "MOTHERSON25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "MPHASIS25NOV25FUT"
+    },
+    {
+      "pcr": 0.59,
+      "tradingSymbol": "MUTHOOTFIN25NOV25FUT"
+    },
+    {
+      "pcr": 0.43,
+      "tradingSymbol": "NATIONALUM25NOV25FUT"
+    },
+    {
+      "pcr": 0.33,
+      "tradingSymbol": "NAUKRI25NOV25FUT"
+    },
+    {
+      "pcr": 0.36,
+      "tradingSymbol": "NBCC25NOV25FUT"
+    },
+    {
+      "pcr": 0.49,
+      "tradingSymbol": "NCC25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "NESTLEIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.42,
+      "tradingSymbol": "NHPC25NOV25FUT"
+    },
+    {
+      "pcr": 1.11,
+      "tradingSymbol": "NIFTY25NOV25FUT"
+    },
+    {
+      "pcr": 0.73,
+      "tradingSymbol": "NIFTYNXT5025NOV25FUT"
+    },
+    {
+      "pcr": 0.29,
+      "tradingSymbol": "NMDC25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "NTPC25NOV25FUT"
+    },
+    {
+      "pcr": 0.49,
+      "tradingSymbol": "NUVAMA25NOV25FUT"
+    },
+    {
+      "pcr": 0.73,
+      "tradingSymbol": "NYKAA25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "OBEROIRLTY25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "OFSS25NOV25FUT"
+    },
+    {
+      "pcr": 0.29,
+      "tradingSymbol": "OIL25NOV25FUT"
+    },
+    {
+      "pcr": 0.53,
+      "tradingSymbol": "ONGC25NOV25FUT"
+    },
+    {
+      "pcr": 0.41,
+      "tradingSymbol": "PAGEIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.36,
+      "tradingSymbol": "PATANJALI25NOV25FUT"
+    },
+    {
+      "pcr": 0.63,
+      "tradingSymbol": "PAYTM25NOV25FUT"
+    },
+    {
+      "pcr": 0.45,
+      "tradingSymbol": "PERSISTENT25NOV25FUT"
+    },
+    {
+      "pcr": 0.65,
+      "tradingSymbol": "PETRONET25NOV25FUT"
+    },
+    {
+      "pcr": 0.52,
+      "tradingSymbol": "PFC25NOV25FUT"
+    },
+    {
+      "pcr": 0.35,
+      "tradingSymbol": "PGEL25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "PHOENIXLTD25NOV25FUT"
+    },
+    {
+      "pcr": 0.44,
+      "tradingSymbol": "PIDILITIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.27,
+      "tradingSymbol": "PIIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "PNB25NOV25FUT"
+    },
+    {
+      "pcr": 0.91,
+      "tradingSymbol": "PNBHOUSING25NOV25FUT"
+    },
+    {
+      "pcr": 0.46,
+      "tradingSymbol": "POLICYBZR25NOV25FUT"
+    },
+    {
+      "pcr": 0.44,
+      "tradingSymbol": "POLYCAB25NOV25FUT"
+    },
+    {
+      "pcr": 0.33,
+      "tradingSymbol": "POWERGRID25NOV25FUT"
+    },
+    {
+      "pcr": 0.19,
+      "tradingSymbol": "POWERINDIA25NOV25FUT"
+    },
+    {
+      "pcr": 0.38,
+      "tradingSymbol": "PPLPHARMA25NOV25FUT"
+    },
+    {
+      "pcr": 0.51,
+      "tradingSymbol": "PRESTIGE25NOV25FUT"
+    },
+    {
+      "pcr": 0.53,
+      "tradingSymbol": "RBLBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.42,
+      "tradingSymbol": "RECLTD25NOV25FUT"
+    },
+    {
+      "pcr": 0.69,
+      "tradingSymbol": "RELIANCE25NOV25FUT"
+    },
+    {
+      "pcr": 0.28,
+      "tradingSymbol": "RVNL25NOV25FUT"
+    },
+    {
+      "pcr": 0.56,
+      "tradingSymbol": "SAIL25NOV25FUT"
+    },
+    {
+      "pcr": 1.27,
+      "tradingSymbol": "SAMMAANCAP25NOV25FUT"
+    },
+    {
+      "pcr": 0.44,
+      "tradingSymbol": "SBICARD25NOV25FUT"
+    },
+    {
+      "pcr": 0.63,
+      "tradingSymbol": "SBILIFE25NOV25FUT"
+    },
+    {
+      "pcr": 0.7,
+      "tradingSymbol": "SBIN25NOV25FUT"
+    },
+    {
+      "pcr": 0.25,
+      "tradingSymbol": "SHREECEM25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "SHRIRAMFIN25NOV25FUT"
+    },
+    {
+      "pcr": 0.38,
+      "tradingSymbol": "SIEMENS25NOV25FUT"
+    },
+    {
+      "pcr": 0.27,
+      "tradingSymbol": "SOLARINDS25NOV25FUT"
+    },
+    {
+      "pcr": 0.58,
+      "tradingSymbol": "SONACOMS25NOV25FUT"
+    },
+    {
+      "pcr": 0.48,
+      "tradingSymbol": "SRF25NOV25FUT"
+    },
+    {
+      "pcr": 0.53,
+      "tradingSymbol": "SUNPHARMA25NOV25FUT"
+    },
+    {
+      "pcr": 0.51,
+      "tradingSymbol": "SUPREMEIND25NOV25FUT"
+    },
+    {
+      "pcr": 0.23,
+      "tradingSymbol": "SUZLON25NOV25FUT"
+    },
+    {
+      "pcr": 0.37,
+      "tradingSymbol": "SYNGENE25NOV25FUT"
+    },
+    {
+      "pcr": 0.35,
+      "tradingSymbol": "TATACONSUM25NOV25FUT"
+    },
+    {
+      "pcr": 0.25,
+      "tradingSymbol": "TATAELXSI25NOV25FUT"
+    },
+    {
+      "pcr": 0.4,
+      "tradingSymbol": "TATAPOWER25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "TATASTEEL25NOV25FUT"
+    },
+    {
+      "pcr": 0.34,
+      "tradingSymbol": "TATATECH25NOV25FUT"
+    },
+    {
+      "pcr": 0.48,
+      "tradingSymbol": "TCS25NOV25FUT"
+    },
+    {
+      "pcr": 0.47,
+      "tradingSymbol": "TECHM25NOV25FUT"
+    },
+    {
+      "pcr": 0.6,
+      "tradingSymbol": "TIINDIA25NOV25FUT"
+    },
+    {
+      "pcr": 0.2,
+      "tradingSymbol": "TITAGARH25NOV25FUT"
+    },
+    {
+      "pcr": 0.64,
+      "tradingSymbol": "TITAN25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "TMPV25NOV25FUT"
+    },
+    {
+      "pcr": 0.73,
+      "tradingSymbol": "TORNTPHARM25NOV25FUT"
+    },
+    {
+      "pcr": 0.52,
+      "tradingSymbol": "TORNTPOWER25NOV25FUT"
+    },
+    {
+      "pcr": 0.53,
+      "tradingSymbol": "TRENT25NOV25FUT"
+    },
+    {
+      "pcr": 0.43,
+      "tradingSymbol": "TVSMOTOR25NOV25FUT"
+    },
+    {
+      "pcr": 0.56,
+      "tradingSymbol": "ULTRACEMCO25NOV25FUT"
+    },
+    {
+      "pcr": 0.46,
+      "tradingSymbol": "UNIONBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.32,
+      "tradingSymbol": "UNITDSPR25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "UNOMINDA25NOV25FUT"
+    },
+    {
+      "pcr": 0.46,
+      "tradingSymbol": "UPL25NOV25FUT"
+    },
+    {
+      "pcr": 0.53,
+      "tradingSymbol": "VBL25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "VEDL25NOV25FUT"
+    },
+    {
+      "pcr": 0.68,
+      "tradingSymbol": "VOLTAS25NOV25FUT"
+    },
+    {
+      "pcr": 0.5,
+      "tradingSymbol": "WIPRO25NOV25FUT"
+    },
+    {
+      "pcr": 0.26,
+      "tradingSymbol": "YESBANK25NOV25FUT"
+    },
+    {
+      "pcr": 0.54,
+      "tradingSymbol": "ZYDUSLIFE25NOV25FUT"
+    }
+  ]
+}

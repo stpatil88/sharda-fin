@@ -1,48 +1,59 @@
 # Backend API Requirements
 # Core Framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
+fastapi
+uvicorn[standard]
 
 # HTTP Requests
-requests==2.31.0
-httpx==0.25.2
+requests
+httpx
 
 # Environment Variables
-python-dotenv==1.0.0
+python-dotenv
 
 # Data Processing
-pandas==2.1.3
-numpy==1.25.2
+pandas
+numpy
 
 # JSON Handling
-pydantic==2.5.0
+pydantic
 
 # CORS Support
-fastapi-cors==0.0.6
+fastapi-cors
 
 # Additional Utilities
-python-multipart==0.0.6
-aiofiles==23.2.1
+python-multipart
+aiofiles
 
 # Angel One SmartAPI
-smartapi-python==1.3.0
+smartapi-python
 
 # Caching
-redis==5.0.1
-python-memcached==1.62
+redis
+python-memcache
 
 # Development Tools
-pytest==7.4.3
+pytest
 pytest-asyncio==0.21.1
-pytest-cov==4.1.0
-httpx==0.25.2
+pytest-cov
+httpx
 
 # Optional: For enhanced logging
-loguru==0.7.2
+loguru
 
 # Optional: For rate limiting
-slowapi==0.1.9
+slowapi
 
+# Scheduler for running scripts at intervals
+schedule
+pytz
+
+# BeautifulSoup for web scraping
+beautifulsoup4
+
+# OTP support
+pyotp
+websocket-client
+logzero
 # Optional: For database (if needed later)
 # sqlalchemy==2.0.23
 # alembic==1.12.1
