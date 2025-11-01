@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sharda-fin-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Persist data directory
+      - ./backend/data:/app/data
+      # Persist logs
+      - ./backend/logs:/app/logs
+      # Persist CSV files
+      - ./backend:/app
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - sharda-network
+    # Resource limits for 4GB RAM VM
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sharda-fin-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - sharda-network
+    # Resource limits for 4GB RAM VM
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  scheduler:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sharda-fin-scheduler
+    command: python scheduler.py
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Persist data directory
+      - ./backend/data:/app/data
+      # Persist logs
+      - ./backend/logs:/app/logs
+      # Persist CSV files
+      - ./backend:/app
+    environment:
+      - TZ=Asia/Kolkata
+    restart: unless-stopped
+    networks:
+      - sharda-network
+    # Resource limits for 4GB RAM VM
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+networks:
+  sharda-network:
+    driver: bridge
+
