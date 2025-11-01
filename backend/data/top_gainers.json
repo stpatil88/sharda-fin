@@ -1,0 +1,76 @@
+{
+  "count": 10,
+  "gainers": [
+    {
+      "tradingSymbol": "ADANIGREEN25NOV25FUT",
+      "percentChange": 11.3,
+      "symbolToken": 39028,
+      "ltp": 1123.9,
+      "netChange": 114.1
+    },
+    {
+      "tradingSymbol": "VBL25NOV25FUT",
+      "percentChange": 9.13,
+      "symbolToken": 49151,
+      "ltp": 499.4,
+      "netChange": 41.8
+    },
+    {
+      "tradingSymbol": "SAIL25NOV25FUT",
+      "percentChange": 6.77,
+      "symbolToken": 49080,
+      "ltp": 141.27,
+      "netChange": 8.96
+    },
+    {
+      "tradingSymbol": "IOC25NOV25FUT",
+      "percentChange": 5.67,
+      "symbolToken": 48798,
+      "ltp": 164.17,
+      "netChange": 8.81
+    },
+    {
+      "tradingSymbol": "NBCC25NOV25FUT",
+      "percentChange": 5.38,
+      "symbolToken": 48917,
+      "ltp": 117.02,
+      "netChange": 5.97
+    },
+    {
+      "tradingSymbol": "RECLTD25NOV25FUT",
+      "percentChange": 5.23,
+      "symbolToken": 49077,
+      "ltp": 391.0,
+      "netChange": 19.45
+    },
+    {
+      "tradingSymbol": "ADANIENSOL25NOV25FUT",
+      "percentChange": 5.12,
+      "symbolToken": 38316,
+      "ltp": 974.05,
+      "netChange": 47.45
+    },
+    {
+      "tradingSymbol": "CGPOWER25NOV25FUT",
+      "percentChange": 4.58,
+      "symbolToken": 48605,
+      "ltp": 758.6,
+      "netChange": 33.25
+    },
+    {
+      "tradingSymbol": "HUDCO25NOV25FUT",
+      "percentChange": 4.35,
+      "symbolToken": 48700,
+      "ltp": 237.25,
+      "netChange": 9.89
+    },
+    {
+      "tradingSymbol": "PFC25NOV25FUT",
+      "percentChange": 4.3,
+      "symbolToken": 49060,
+      "ltp": 411.35,
+      "netChange": 16.95
+    }
+  ],
+  "exchange": "NSE"
+}

@@ -1,0 +1,76 @@
+{
+  "count": 10,
+  "losers": [
+    {
+      "tradingSymbol": "BANDHANBNK25NOV25FUT",
+      "percentChange": -1.81,
+      "symbolToken": 48578,
+      "ltp": 173.27,
+      "netChange": -3.19
+    },
+    {
+      "tradingSymbol": "SAMMAANCAP25NOV25FUT",
+      "percentChange": -1.98,
+      "symbolToken": 49083,
+      "ltp": 185.4,
+      "netChange": -3.75
+    },
+    {
+      "tradingSymbol": "NUVAMA25NOV25FUT",
+      "percentChange": -2.74,
+      "symbolToken": 48961,
+      "ltp": 7255.0,
+      "netChange": -204.5
+    },
+    {
+      "tradingSymbol": "POLICYBZR25NOV25FUT",
+      "percentChange": -2.75,
+      "symbolToken": 49069,
+      "ltp": 1738.0,
+      "netChange": -49.1
+    },
+    {
+      "tradingSymbol": "360ONE25NOV25FUT",
+      "percentChange": -3.05,
+      "symbolToken": 38313,
+      "ltp": 1140.0,
+      "netChange": -35.9
+    },
+    {
+      "tradingSymbol": "BOSCHLTD25NOV25FUT",
+      "percentChange": -3.08,
+      "symbolToken": 48596,
+      "ltp": 37575.0,
+      "netChange": -1195.0
+    },
+    {
+      "tradingSymbol": "DRREDDY25NOV25FUT",
+      "percentChange": -3.08,
+      "symbolToken": 48632,
+      "ltp": 1257.2,
+      "netChange": -40.0
+    },
+    {
+      "tradingSymbol": "CAMS25NOV25FUT",
+      "percentChange": -3.38,
+      "symbolToken": 48600,
+      "ltp": 3860.0,
+      "netChange": -135.0
+    },
+    {
+      "tradingSymbol": "KFINTECH25NOV25FUT",
+      "percentChange": -4.54,
+      "symbolToken": 48857,
+      "ltp": 1115.2,
+      "netChange": -53.0
+    },
+    {
+      "tradingSymbol": "HDFCAMC25NOV25FUT",
+      "percentChange": -5.03,
+      "symbolToken": 48651,
+      "ltp": 5407.5,
+      "netChange": -286.5
+    }
+  ],
+  "exchange": "NSE"
+}

@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: 'standalone', // Enable standalone output for Docker
   images: {
     domains: ['images.unsplash.com', 'via.placeholder.com'],
   },

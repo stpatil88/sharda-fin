@@ -1,0 +1,36 @@
+{
+  "NIFTY": {
+    "status": "ok",
+    "symbol": "NIFTY",
+    "exchange": "NSE",
+    "price": 26053.9,
+    "open": 0.0,
+    "high": 0.0,
+    "low": 0.0,
+    "close": 25936.2
+  },
+  "BANKNIFTY": {
+    "status": "ok",
+    "symbol": "BANKNIFTY",
+    "exchange": "NSE",
+    "price": 58385.25,
+    "open": 0.0,
+    "high": 0.0,
+    "low": 0.0,
+    "close": 58214.1
+  },
+  "SENSEX": {
+    "status": "ok",
+    "symbol": "SENSEX",
+    "exchange": "BSE",
+    "price": 84997.13,
+    "open": 84663.68,
+    "high": 85105.83,
+    "low": 84638.68,
+    "close": 84628.16
+  },
+  "GOLD": {
+    "status": "not_supported",
+    "reason": "Index GOLD not mapped"
+  }
+}
