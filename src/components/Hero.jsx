@@ -1,19 +1,73 @@
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3 } from 'lucide-react';
+import { marketDataAPI } from '../utils/api';
 
 export default function Hero() {
   const [marketData, setMarketData] = useState({
     nifty: { value: 19500, change: 150, changePercent: 0.78 },
     sensex: { value: 65000, change: 200, changePercent: 0.31 },
-    gold: { value: 62000, change: -200, changePercent: -0.32 },
-    silver: { value: 75000, change: 500, changePercent: 0.67 }
+    banknifty: { value: 45000, change: 300, changePercent: 0.67 }
   });
+
+  useEffect(() => {
+    async function loadMarketData() {
+      try {
+        console.log('[Hero] Loading market data...');
+        const quotes = await marketDataAPI.getAllIndexQuotes();
+        console.log('[Hero] Received quotes:', quotes);
+        
+        if (quotes && Object.keys(quotes).length > 0) {
+          setMarketData(prev => {
+            const updated = { ...prev };
+            
+            if (quotes.NIFTY && quotes.NIFTY.status === 'ok') {
+              updated.nifty = {
+                value: quotes.NIFTY.price || 0,
+                change: quotes.NIFTY.change || 0,
+                changePercent: quotes.NIFTY.changePercent || 0
+              };
+              console.log('[Hero] Updated NIFTY:', updated.nifty);
+            }
+            
+            if (quotes.SENSEX && quotes.SENSEX.status === 'ok') {
+              updated.sensex = {
+                value: quotes.SENSEX.price || 0,
+                change: quotes.SENSEX.change || 0,
+                changePercent: quotes.SENSEX.changePercent || 0
+              };
+              console.log('[Hero] Updated SENSEX:', updated.sensex);
+            }
+            
+            if (quotes.BANKNIFTY && quotes.BANKNIFTY.status === 'ok') {
+              updated.banknifty = {
+                value: quotes.BANKNIFTY.price || 0,
+                change: quotes.BANKNIFTY.change || 0,
+                changePercent: quotes.BANKNIFTY.changePercent || 0
+              };
+              console.log('[Hero] Updated BANKNIFTY:', updated.banknifty);
+            }
+            
+            console.log('[Hero] Final updated market data:', updated);
+            return updated;
+          });
+        } else {
+          console.warn('[Hero] No quotes received or empty response');
+        }
+      } catch (e) {
+        console.error('[Hero] Error loading market data:', e);
+      }
+    }
+    
+    loadMarketData();
+    // Auto-refresh every 60 seconds
+    const interval = setInterval(loadMarketData, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const tickerItems = [
     { name: 'NIFTY 50', value: marketData.nifty.value, change: marketData.nifty.change, changePercent: marketData.nifty.changePercent },
     { name: 'SENSEX', value: marketData.sensex.value, change: marketData.sensex.change, changePercent: marketData.sensex.changePercent },
-    { name: 'GOLD', value: marketData.gold.value, change: marketData.gold.change, changePercent: marketData.gold.changePercent },
-    { name: 'SILVER', value: marketData.silver.value, change: marketData.silver.change, changePercent: marketData.silver.changePercent },
+    { name: 'BANKNIFTY', value: marketData.banknifty.value, change: marketData.banknifty.change, changePercent: marketData.banknifty.changePercent },
   ];
 
   return (

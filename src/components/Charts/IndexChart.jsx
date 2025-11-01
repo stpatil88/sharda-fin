@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { marketDataAPI } from '../../utils/api';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
 export default function IndexChart({ symbol = 'NIFTY', height = 300 }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [quote, setQuote] = useState(null);
 
   // Mock data - replace with actual API call
   useEffect(() => {
@@ -30,7 +32,27 @@ export default function IndexChart({ symbol = 'NIFTY', height = 300 }) {
     setTimeout(() => {
       setData(generateMockData());
       setLoading(false);
-    }, 1000);
+    }, 500);
+
+    async function loadQuote() {
+      try {
+        console.log(`[IndexChart] Fetching quote for ${symbol}...`);
+        const q = await marketDataAPI.getIndexQuote(symbol);
+        console.log(`[IndexChart] Received quote for ${symbol}:`, q);
+        if (q && q.status === 'ok') {
+          console.log(`[IndexChart] Setting quote data:`, q);
+          setQuote(q);
+        } else {
+          console.warn(`[IndexChart] Invalid quote status for ${symbol}:`, q);
+        }
+      } catch (e) {
+        console.error(`[IndexChart] Error loading quote for ${symbol}:`, e);
+      }
+    }
+
+    loadQuote();
+    const interval = setInterval(loadQuote, 60000); // refresh every 60s
+    return () => clearInterval(interval);
   }, [symbol]);
 
   if (loading) {
@@ -43,10 +65,25 @@ export default function IndexChart({ symbol = 'NIFTY', height = 300 }) {
     );
   }
 
-  const currentPrice = data[data.length - 1]?.price || 0;
-  const previousPrice = data[data.length - 2]?.price || 0;
-  const change = currentPrice - previousPrice;
-  const changePercent = previousPrice ? (change / previousPrice) * 100 : 0;
+  const derivedCurrent = data[data.length - 1]?.price || 0;
+  const derivedPrev = data[data.length - 2]?.price || 0;
+  
+  // Use quote data if available, otherwise fallback to mock
+  const currentPrice = quote?.price ?? derivedCurrent;
+  const change = quote?.change ?? (currentPrice - derivedPrev);
+  const changePercent = quote?.changePercent ?? (derivedPrev ? (change / derivedPrev) * 100 : 0);
+  
+  // Debug logging
+  useEffect(() => {
+    if (quote) {
+      console.log(`[IndexChart] Rendering with quote data:`, {
+        symbol,
+        price: quote.price,
+        change: quote.change,
+        changePercent: quote.changePercent
+      });
+    }
+  }, [quote, symbol]);
 
   return (
     <div className="card">

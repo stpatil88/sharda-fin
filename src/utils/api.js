@@ -1,6 +1,18 @@
 import axios from 'axios';
 import { API_CONFIG, ENDPOINTS, CACHE_DURATION, STORAGE_KEYS } from './constants';
 
+// Backend base URL
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+
+// Create backend client
+const backendClient = axios.create({
+  baseURL: BACKEND_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 // Create axios instance with default config
 const apiClient = axios.create({
   timeout: 10000,
@@ -115,37 +127,103 @@ export const marketDataAPI = {
     }
   },
 
+  // Get single index quote
+  getIndexQuote: async (symbol) => {
+    try {
+      console.log(`[API] Fetching index quote for ${symbol} from ${BACKEND_URL}/index-quote/${symbol}`);
+      const response = await backendClient.get(`/index-quote/${symbol}`);
+      console.log(`[API] Index quote response for ${symbol}:`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`[API] Index quote fetch error for ${symbol}:`, error);
+      console.error(`[API] Error details:`, error.response?.data || error.message);
+      return { status: 'error', error: error.message };
+    }
+  },
+
+  // Get all index quotes
+  getAllIndexQuotes: async () => {
+    try {
+      console.log(`[API] Fetching all index quotes from ${BACKEND_URL}/index-quotes`);
+      const response = await backendClient.get('/index-quotes');
+      console.log(`[API] All index quotes response:`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error('[API] All index quotes fetch error:', error);
+      console.error('[API] Error details:', error.response?.data || error.message);
+      console.error('[API] Backend URL:', BACKEND_URL);
+      return {};
+    }
+  },
+
   // Get top gainers
   getTopGainers: async () => {
     try {
-      // Mock data - replace with actual API call
+      console.log('[API] Fetching top gainers...');
+      const response = await backendClient.get('/top-gainers?exchange=NSE');
+      console.log('[API] Top gainers response:', response.data);
+      const gainers = response.data?.gainers || [];
+      console.log('[API] Gainers array:', gainers);
+      // Validate each gainer has required fields
+      gainers.forEach((g, i) => {
+        if (!g.symbol) {
+          console.warn(`[API] Gainer ${i} missing symbol:`, g);
+        }
+      });
+      return gainers;
+    } catch (error) {
+      console.error('[API] Top gainers fetch error:', error);
+      console.error('[API] Error details:', error.response?.data || error.message);
+      // Fallback mock data
       return [
         { symbol: 'RELIANCE', price: 2450, change: 45, changePercent: 1.87 },
         { symbol: 'TCS', price: 3850, change: 38, changePercent: 1.00 },
-        { symbol: 'HDFC', price: 1650, change: 25, changePercent: 1.54 },
-        { symbol: 'INFY', price: 1850, change: 22, changePercent: 1.20 },
-        { symbol: 'ICICIBANK', price: 950, change: 15, changePercent: 1.60 },
       ];
-    } catch (error) {
-      console.error('Top gainers fetch error:', error);
-      return [];
     }
   },
 
   // Get top losers
   getTopLosers: async () => {
     try {
-      // Mock data - replace with actual API call
+      console.log('[API] Fetching top losers...');
+      const response = await backendClient.get('/top-losers?exchange=NSE');
+      console.log('[API] Top losers response:', response.data);
+      const losers = response.data?.losers || [];
+      console.log('[API] Losers array:', losers);
+      // Validate each loser has required fields
+      losers.forEach((l, i) => {
+        if (!l.symbol) {
+          console.warn(`[API] Loser ${i} missing symbol:`, l);
+        }
+      });
+      return losers;
+    } catch (error) {
+      console.error('[API] Top losers fetch error:', error);
+      console.error('[API] Error details:', error.response?.data || error.message);
+      // Fallback mock data
       return [
         { symbol: 'ADANIPORTS', price: 850, change: -25, changePercent: -2.86 },
         { symbol: 'BAJFINANCE', price: 7200, change: -180, changePercent: -2.44 },
-        { symbol: 'MARUTI', price: 10500, change: -200, changePercent: -1.87 },
-        { symbol: 'TITAN', price: 3200, change: -45, changePercent: -1.39 },
-        { symbol: 'NESTLEIND', price: 18500, change: -200, changePercent: -1.07 },
       ];
+    }
+  },
+
+  // Get Put/Call Ratio data
+  getPutCallRatio: async (limit = 100) => {
+    try {
+      console.log(`[API] Fetching put/call ratio from ${BACKEND_URL}/putcallratio?limit=${limit}`);
+      const response = await backendClient.get(`/putcallratio?exchange=NSE&limit=${limit}`);
+      console.log(`[API] Put/call ratio response:`, response.data);
+      return response.data;
     } catch (error) {
-      console.error('Top losers fetch error:', error);
-      return [];
+      console.error('[API] Put/call ratio fetch error:', error);
+      console.error('[API] Error details:', error.response?.data || error.message);
+      // Return mock data as fallback
+      return {
+        status: 'error',
+        data: [],
+        total_symbols: 0
+      };
     }
   },
 
@@ -177,6 +255,31 @@ export const newsAPI = {
     }
 
     try {
+      // Try backend CSV-based Marathi/English news first
+      try {
+        const response = await apiClient.get(`${BACKEND_URL}/marathi-news`, {
+          params: { limit },
+        });
+        const items = response.data?.articles || [];
+        // Normalize for frontend consumption and include both titles
+        const normalized = items.map((a, idx) => ({
+          id: idx + 1,
+          titleEn: a.english_title || '',
+          titleMr: a.marathi_title || '',
+          source: a.source || 'Unknown',
+          url: a.url || '#',
+          category: 'Market Update',
+          publishedAt: new Date().toISOString(),
+        }));
+        if (normalized.length > 0) {
+          setCachedData(cacheKey, normalized);
+          return normalized;
+        }
+        // If backend returned empty, fall through to external fallback
+      } catch (be) {
+        // Fallback to external APIs below
+      }
+
       // Using GNews API for better Indian market coverage
       const response = await apiClient.get(API_CONFIG.GNEWS_API_BASE_URL + '/search', {
         params: {
@@ -189,27 +292,42 @@ export const newsAPI = {
       });
 
       const data = response.data.articles || [];
-      setCachedData(cacheKey, data);
-      return data;
+      const normalized = data.map((a, idx) => ({
+        id: idx + 1,
+        titleEn: a.title,
+        titleMr: '',
+        source: a.source?.name,
+        url: a.url,
+        category: 'Market Update',
+        publishedAt: a.publishedAt,
+      }));
+      setCachedData(cacheKey, normalized);
+      return normalized;
     } catch (error) {
       console.error('News fetch error:', error);
-      // Return mock data as fallback
-      return [
+      // Return normalized mock data as fallback
+      const fallback = [
         {
-          title: 'Nifty 50 crosses 19,500 mark as banking stocks rally',
-          description: 'The benchmark index gained 0.8% led by strong performance in banking and IT sectors.',
-          source: { name: 'Economic Times' },
+          id: 1,
+          titleEn: 'Nifty 50 crosses 19,500 mark as banking stocks rally',
+          titleMr: 'बँकिंग शेअर्सच्या वाढीमुळे निफ्टी 19,500 च्या वर',
+          source: 'Economic Times',
           publishedAt: new Date().toISOString(),
           url: '#',
+          category: 'Market Update',
         },
         {
-          title: 'RBI keeps repo rate unchanged at 6.5%',
-          description: 'Central bank maintains status quo on interest rates citing inflation concerns.',
-          source: { name: 'Business Standard' },
+          id: 2,
+          titleEn: 'RBI keeps repo rate unchanged at 6.5%',
+          titleMr: 'RBI ने रेपो दर 6.5% वर कायम ठेवला',
+          source: 'Business Standard',
           publishedAt: new Date(Date.now() - 3600000).toISOString(),
           url: '#',
+          category: 'Policy',
         },
       ];
+      setCachedData(cacheKey, fallback);
+      return fallback;
     }
   },
 };
