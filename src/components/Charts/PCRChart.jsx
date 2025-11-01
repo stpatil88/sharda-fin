@@ -222,4 +222,3 @@ export default function PCRChart({ height = 400 }) {
     </div>
   );
 }
-

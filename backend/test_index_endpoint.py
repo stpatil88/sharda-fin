@@ -66,4 +66,3 @@ if __name__ == "__main__":
     
     # Test all
     test_all_indexes()
-

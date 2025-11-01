@@ -344,7 +344,8 @@ if __name__ == "__main__":
     parser.add_argument("--pcr", action="store_true")
     parser.add_argument("--quotes", action="store_true")
     args = parser.parse_args()
-    write_index_quotes_file(args.indexes)
+    client = _get_client()
+    write_index_quotes_file(args.indexes, client)
     if args.all or args.gainers:
         print("Writing top_gainers.json ->", write_top_gainers_file(args.exchange,client))
     if args.all or args.losers:

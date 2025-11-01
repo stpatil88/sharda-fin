@@ -103,4 +103,3 @@ services:
 networks:
   sharda-network:
     driver: bridge
-
