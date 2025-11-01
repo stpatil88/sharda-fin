@@ -187,13 +187,16 @@ export const useIntersectionObserver = (ref, options = {}) => {
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    // Store ref.current in a variable to use in cleanup
+    const currentElement = ref.current;
+    
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
     };
   }, [ref, options]);
