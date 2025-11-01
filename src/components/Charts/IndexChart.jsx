@@ -55,6 +55,18 @@ export default function IndexChart({ symbol = 'NIFTY', height = 300 }) {
     return () => clearInterval(interval);
   }, [symbol]);
 
+  // Debug logging - moved before conditional return to follow React Hooks rules
+  useEffect(() => {
+    if (quote) {
+      console.log(`[IndexChart] Rendering with quote data:`, {
+        symbol,
+        price: quote.price,
+        change: quote.change,
+        changePercent: quote.changePercent
+      });
+    }
+  }, [quote, symbol]);
+
   if (loading) {
     return (
       <div className="card">
@@ -72,18 +84,6 @@ export default function IndexChart({ symbol = 'NIFTY', height = 300 }) {
   const currentPrice = quote?.price ?? derivedCurrent;
   const change = quote?.change ?? (currentPrice - derivedPrev);
   const changePercent = quote?.changePercent ?? (derivedPrev ? (change / derivedPrev) * 100 : 0);
-  
-  // Debug logging
-  useEffect(() => {
-    if (quote) {
-      console.log(`[IndexChart] Rendering with quote data:`, {
-        symbol,
-        price: quote.price,
-        change: quote.change,
-        changePercent: quote.changePercent
-      });
-    }
-  }, [quote, symbol]);
 
   return (
     <div className="card">
