@@ -229,21 +229,40 @@ Then restart the backend:
 docker compose restart backend
 ```
 
-### Update Frontend API URL (If Needed)
+### Update Frontend Backend URL
 
-If your frontend needs to call the backend, update the API URL. Check your frontend code or create `.env.local`:
+The frontend needs to know where the backend is. You have two options:
+
+**Option 1: Set Environment Variable (Recommended)**
+
+Create or update `.env` file in the root directory:
 
 ```bash
 cd ~/sharda-fin
-nano .env.local
+nano .env
 ```
 
 Add:
 ```env
-NEXT_PUBLIC_API_URL=http://YOUR_EXTERNAL_IP:8000
+NEXT_PUBLIC_BACKEND_URL=http://YOUR_EXTERNAL_IP:8000
 ```
 
-Rebuild frontend:
+Replace `YOUR_EXTERNAL_IP` with your actual VM IP (e.g., `http://34.123.45.67:8000`).
+
+Then update docker-compose.yml to use it, or export before running docker compose:
+
+```bash
+export NEXT_PUBLIC_BACKEND_URL=http://YOUR_EXTERNAL_IP:8000
+docker compose up -d --build frontend
+```
+
+**Option 2: Automatic Detection (Works but less reliable)**
+
+The frontend code now automatically detects the backend URL based on the current hostname. If you access the frontend at `http://34.123.45.67:3000`, it will automatically use `http://34.123.45.67:8000` for the backend.
+
+However, **Option 1 is recommended** for production as it's more explicit and reliable.
+
+**After updating, rebuild frontend:**
 ```bash
 docker compose up -d --build frontend
 ```

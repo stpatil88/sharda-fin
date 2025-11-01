@@ -2,7 +2,30 @@ import axios from 'axios';
 import { API_CONFIG, ENDPOINTS, CACHE_DURATION, STORAGE_KEYS } from './constants';
 
 // Backend base URL
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+// For production: Use environment variable or detect from current host
+// For development: Use localhost
+const getBackendURL = () => {
+  // If environment variable is set, use it
+  if (process.env.NEXT_PUBLIC_BACKEND_URL) {
+    return process.env.NEXT_PUBLIC_BACKEND_URL;
+  }
+  
+  // In browser environment, detect from current host
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    // If accessing from localhost, use localhost:8000
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:8000';
+    }
+    // Otherwise, use the same host with port 8000
+    return `http://${host}:8000`;
+  }
+  
+  // Server-side rendering fallback
+  return 'http://localhost:8000';
+};
+
+const BACKEND_URL = getBackendURL();
 
 // Create backend client
 const backendClient = axios.create({
