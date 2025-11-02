@@ -3,8 +3,8 @@ import GrowthLogo from './GrowthLogo';
 
 export default function About() {
   const stats = [
-    { icon: Users, label: '700 Years of Experience', value: '6+' },
-    { icon: Award, label: 'Years Experience', value: '15+' },
+    { icon: Users, label: 'More than 700 Users', value: '700+' },
+    { icon: Award, label: 'Years Experience', value: '6+' },
     { icon: Target, label: 'SEBI Registration', value: 'INZ000161534' },
     { icon: Eye, label: 'Market Insights', value: 'Daily' },
   ];
