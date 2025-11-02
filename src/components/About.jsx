@@ -1,8 +1,9 @@
 import { Target, Eye, Users, Award } from 'lucide-react';
+import GrowthLogo from './GrowthLogo';
 
 export default function About() {
   const stats = [
-    { icon: Users, label: 'Active Clients', value: '10,000+' },
+    { icon: Users, label: '700 Years of Experience', value: '6+' },
     { icon: Award, label: 'Years Experience', value: '15+' },
     { icon: Target, label: 'SEBI Registration', value: 'INZ000161534' },
     { icon: Eye, label: 'Market Insights', value: 'Daily' },
@@ -12,6 +13,9 @@ export default function About() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
+          <div className="flex flex-col items-center mb-6">
+            <GrowthLogo className="mb-4" size={150} />
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             About Sharada Financial Services
           </h2>

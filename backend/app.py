@@ -26,9 +26,13 @@ app = FastAPI(
 )
 
 # CORS middleware - Enhanced configuration
-cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
-# Clean up origins (remove whitespace)
-cors_origins = [origin.strip() for origin in cors_origins]
+cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+# Support wildcard for development (use with caution in production)
+if cors_origins_str == "*":
+    cors_origins = ["*"]
+else:
+    # Split and clean up origins (remove whitespace)
+    cors_origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
 
 print(f"🔧 CORS Origins configured: {cors_origins}")
 
