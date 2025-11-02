@@ -5,20 +5,33 @@ import { API_CONFIG, ENDPOINTS, CACHE_DURATION, STORAGE_KEYS } from './constants
 // For production: Use environment variable or detect from current host
 // For development: Use localhost
 const getBackendURL = () => {
-  // If environment variable is set, use it
+  // Priority 1: Environment variable (most reliable - always use this in production)
   if (process.env.NEXT_PUBLIC_BACKEND_URL) {
     return process.env.NEXT_PUBLIC_BACKEND_URL;
   }
   
-  // In browser environment, detect from current host
+  // Priority 2: In browser environment, detect from current host
   if (typeof window !== 'undefined') {
     const host = window.location.hostname;
+    const protocol = window.location.protocol; // 'https:' or 'http:'
+    const port = window.location.port;
+    
     // If accessing from localhost, use localhost:8000
     if (host === 'localhost' || host === '127.0.0.1') {
       return 'http://localhost:8000';
     }
-    // Otherwise, use the same host with port 8000
-    return `http://${host}:8000`;
+    
+    // For production domains: Use same protocol and host
+    // Option A: If using Nginx reverse proxy (recommended), use /api path
+    // Check if we're on standard ports (80/443) - likely using reverse proxy
+    if (!port || port === '80' || port === '443') {
+      // Using reverse proxy, backend should be at /api
+      return `${protocol}//${host}/api`;
+    }
+    
+    // Option B: Direct port access (if not using reverse proxy)
+    // Use same protocol but different port
+    return `${protocol}//${host}:8000`;
   }
   
   // Server-side rendering fallback
