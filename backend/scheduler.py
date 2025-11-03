@@ -24,6 +24,16 @@ logging.basicConfig(
 # Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+def get_python_command():
+    """Detect the correct Python command (python3 or python)"""
+    import shutil
+    for cmd in ['python3', 'python']:
+        if shutil.which(cmd):
+            return cmd
+    # Fallback: try sys.executable
+    import sys
+    return sys.executable
+
 def is_market_hours():
     """Check if current time is within market hours (9 AM to 3:30 PM IST) and weekday (Mon-Fri)"""
     # Use IST timezone for accurate market hours
@@ -55,10 +65,11 @@ def run_angel_one_api():
     try:
         logging.info("Starting angel_one_api.py...")
         script_path = os.path.join(SCRIPT_DIR, "angel_one_api.py")
+        python_cmd = get_python_command()
         
         # Run with --all flag to fetch all data
         result = subprocess.run(
-            ["python", script_path, "--all"],
+            [python_cmd, script_path, "--all"],
             cwd=SCRIPT_DIR,
             capture_output=True,
             text=True,
@@ -87,9 +98,10 @@ def run_market_news_scraper():
     try:
         logging.info("Starting scape_market_news.py...")
         script_path = os.path.join(SCRIPT_DIR, "scape_market_news.py")
+        python_cmd = get_python_command()
         
         result = subprocess.run(
-            ["python", script_path],
+            [python_cmd, script_path],
             cwd=SCRIPT_DIR,
             capture_output=True,
             text=True,

@@ -3,31 +3,31 @@
     "status": "ok",
     "symbol": "NIFTY",
     "exchange": "NSE",
-    "price": 26053.9,
+    "price": 25752.55,
     "open": 0.0,
     "high": 0.0,
     "low": 0.0,
-    "close": 25936.2
+    "close": 25722.1
   },
   "BANKNIFTY": {
     "status": "ok",
     "symbol": "BANKNIFTY",
     "exchange": "NSE",
-    "price": 58385.25,
+    "price": 58087.4,
     "open": 0.0,
     "high": 0.0,
     "low": 0.0,
-    "close": 58214.1
+    "close": 57776.35
   },
   "SENSEX": {
     "status": "ok",
     "symbol": "SENSEX",
     "exchange": "BSE",
-    "price": 84997.13,
-    "open": 84663.68,
-    "high": 85105.83,
-    "low": 84638.68,
-    "close": 84628.16
+    "price": 83994.66,
+    "open": 83835.1,
+    "high": 84052.26,
+    "low": 83609.54,
+    "close": 83938.71
   },
   "GOLD": {
     "status": "not_supported",
