@@ -1,0 +1,36 @@
+{
+  "status": "success",
+  "data": {
+    "fii": {
+      "buy": 14585.86,
+      "sell": 16351.91,
+      "net": -1766.05,
+      "date": "21-Nov-2025",
+      "category": "FII/FPI *"
+    },
+    "dii": {
+      "buy": 14908.67,
+      "sell": 11747.06,
+      "net": 3161.61,
+      "date": "21-Nov-2025",
+      "category": "DII **"
+    }
+  },
+  "raw_data": [
+    {
+      "category": "DII **",
+      "date": "21-Nov-2025",
+      "buyValue": "14908.67",
+      "sellValue": "11747.06",
+      "netValue": "3161.61"
+    },
+    {
+      "category": "FII/FPI *",
+      "date": "21-Nov-2025",
+      "buyValue": "14585.86",
+      "sellValue": "16351.91",
+      "netValue": "-1766.05"
+    }
+  ],
+  "timestamp": "2025-11-22T13:44:39.366836"
+}

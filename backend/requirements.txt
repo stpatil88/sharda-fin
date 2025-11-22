@@ -50,6 +50,9 @@ pytz==2025.2
 beautifulsoup4==4.14.2
 soupsieve==2.8
 
+# NSE Python library for NSE data
+nsepythonserver
+
 # OTP support
 pyotp==2.9.0
 

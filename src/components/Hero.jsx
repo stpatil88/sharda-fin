@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3 } from 'lucide-react';
 import { marketDataAPI } from '../utils/api';
 
@@ -79,7 +80,7 @@ export default function Hero() {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow animation-delay-4000"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative max-w-[95%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8">
@@ -102,9 +103,9 @@ export default function Hero() {
               >
                 Open Demat Account
               </button>
-              <button className="btn-secondary text-lg px-8 py-3">
+              <Link href="/learn-trading" className="btn-secondary text-lg px-8 py-3 inline-block text-center">
                 Learn About Trading
-              </button>
+              </Link>
             </div>
 
             <div className="flex items-center space-x-8 text-sm text-gray-600">

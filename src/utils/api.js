@@ -266,15 +266,66 @@ export const marketDataAPI = {
   // Get FII/DII data
   getFIIDIIData: async () => {
     try {
-      // Mock data - replace with actual API call
-      return {
-        fii: { net: 2500, buy: 5000, sell: 2500 },
-        dii: { net: 1200, buy: 3000, sell: 1800 },
-        date: new Date().toISOString(),
-      };
+      const response = await backendClient.get('/nse/fii-dii');
+      return response.data;
     } catch (error) {
       console.error('FII/DII data fetch error:', error);
       return { fii: { net: 0 }, dii: { net: 0 } };
+    }
+  },
+};
+
+// NSE Data API
+export const nseDataAPI = {
+  // Get Block Deals
+  getBlockDeals: async (fromDate = null, toDate = null) => {
+    try {
+      const params = {};
+      if (fromDate) params.from_date = fromDate;
+      if (toDate) params.to_date = toDate;
+      
+      const response = await backendClient.get('/nse/block-deals', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Block deals fetch error:', error);
+      return { status: 'error', data: [], count: 0 };
+    }
+  },
+
+  // Get Bulk Deals
+  getBulkDeals: async (fromDate = null, toDate = null) => {
+    try {
+      const params = {};
+      if (fromDate) params.from_date = fromDate;
+      if (toDate) params.to_date = toDate;
+      
+      const response = await backendClient.get('/nse/bulk-deals', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Bulk deals fetch error:', error);
+      return { status: 'error', data: [], count: 0 };
+    }
+  },
+
+  // Get FII/DII Data
+  getFIIDIIData: async () => {
+    try {
+      const response = await backendClient.get('/nse/fii-dii');
+      return response.data;
+    } catch (error) {
+      console.error('FII/DII data fetch error:', error);
+      return { status: 'error', data: {} };
+    }
+  },
+
+  // Get Past Results
+  getPastResults: async (symbol) => {
+    try {
+      const response = await backendClient.get(`/nse/past-results/${symbol}`);
+      return response.data;
+    } catch (error) {
+      console.error('Past results fetch error:', error);
+      return { status: 'error', data: {} };
     }
   },
 };

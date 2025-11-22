@@ -18,8 +18,10 @@ export default function Navbar() {
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services' },
+    { name: 'Learn Trading', href: '/learn-trading' },
     { name: 'Demat Account', href: '/demat-account' },
     { name: 'Market News', href: '/market-news' },
+    { name: 'Market Results', href: '/market-results' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -27,10 +29,10 @@ export default function Navbar() {
     <nav className={`fixed w-full z-50 transition-all duration-300 ${
       isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[95%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
             <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">S</span>
             </div>
@@ -39,13 +41,13 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Evenly Spaced */}
+          <div className="hidden md:flex items-center flex-1 justify-evenly max-w-5xl mx-auto">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200 whitespace-nowrap text-sm lg:text-base"
               >
                 {item.name}
               </Link>
@@ -53,7 +55,7 @@ export default function Navbar() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
             <Link
               href="tel:+917020130986"
               className="flex items-center space-x-1 text-gray-600 hover:text-primary-600 transition-colors duration-200"

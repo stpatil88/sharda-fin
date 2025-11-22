@@ -121,12 +121,45 @@ def run_market_news_scraper():
     except Exception as e:
         logging.error(f"❌ Error running scape_market_news.py: {str(e)}")
 
+def run_nse_data_fetcher():
+    """Run fetch_nse_data.py script"""
+    if not is_market_hours():
+        logging.info("Outside market hours, skipping fetch_nse_data.py")
+        return
+    
+    try:
+        logging.info("Starting fetch_nse_data.py...")
+        script_path = os.path.join(SCRIPT_DIR, "fetch_nse_data.py")
+        python_cmd = get_python_command()
+        
+        result = subprocess.run(
+            [python_cmd, script_path],
+            cwd=SCRIPT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=300  # 5 minute timeout
+        )
+        
+        if result.returncode == 0:
+            logging.info(f"✅ fetch_nse_data.py completed successfully")
+            if result.stdout:
+                logging.debug(f"Output: {result.stdout}")
+        else:
+            logging.error(f"❌ fetch_nse_data.py failed with return code {result.returncode}")
+            if result.stderr:
+                logging.error(f"Error: {result.stderr}")
+    except subprocess.TimeoutExpired:
+        logging.error("❌ fetch_nse_data.py timed out after 5 minutes")
+    except Exception as e:
+        logging.error(f"❌ Error running fetch_nse_data.py: {str(e)}")
+
 def main():
     """Main scheduler loop"""
     logging.info("🚀 Starting scheduler service...")
     logging.info("Schedule:")
     logging.info("  - angel_one_api.py: Every 5 minutes (9 AM - 3:30 PM, Mon-Fri)")
     logging.info("  - scape_market_news.py: Every hour (9 AM - 3:30 PM, Mon-Fri)")
+    logging.info("  - fetch_nse_data.py: Every 30 minutes (9 AM - 3:30 PM, Mon-Fri)")
     
     # Schedule angel_one_api.py every 5 minutes
     schedule.every(5).minutes.do(run_angel_one_api)
@@ -134,10 +167,14 @@ def main():
     # Schedule scape_market_news.py every hour at :00 minutes
     schedule.every().hour.at(":00").do(run_market_news_scraper)
     
+    # Schedule fetch_nse_data.py every 30 minutes
+    schedule.every(30).minutes.do(run_nse_data_fetcher)
+    
     # Also run on startup if within market hours
     if is_market_hours():
         logging.info("Market hours detected, running initial tasks...")
         run_angel_one_api()
+        run_nse_data_fetcher()
         # Only run news scraper if it's at the top of the hour
         if datetime.now().minute == 0:
             run_market_news_scraper()

@@ -355,6 +355,161 @@ def cache_stats():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error getting cache stats: {str(e)}")
 
+
+# Manual trigger endpoint for NSE data fetch
+@app.post("/nse/fetch-data")
+def trigger_nse_data_fetch():
+    """
+    Manually trigger NSE data fetch (block deals, bulk deals, FII/DII, past results)
+    This will run the fetch_nse_data.py script and update JSON files
+    """
+    try:
+        import subprocess
+        import os
+        
+        script_path = os.path.join(os.path.dirname(__file__), "fetch_nse_data.py")
+        python_cmd = "python"  # or "python3" depending on your setup
+        
+        result = subprocess.run(
+            [python_cmd, script_path],
+            cwd=os.path.dirname(__file__),
+            capture_output=True,
+            text=True,
+            timeout=300  # 5 minute timeout
+        )
+        
+        if result.returncode == 0:
+            return {
+                "status": "success",
+                "message": "NSE data fetch completed successfully",
+                "output": result.stdout[:500] if result.stdout else "No output"
+            }
+        else:
+            return {
+                "status": "error",
+                "message": "NSE data fetch failed",
+                "error": result.stderr[:500] if result.stderr else "Unknown error"
+            }
+    except subprocess.TimeoutExpired:
+        raise HTTPException(status_code=500, detail="NSE data fetch timed out after 5 minutes")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error triggering NSE data fetch: {str(e)}")
+
+
+# NSE Data endpoints (read from JSON files)
+@app.get("/nse/block-deals")
+@cached(ttl=CACHE_TTL["MARKET_DATA"])
+def api_block_deals(from_date: str = None, to_date: str = None):
+    """
+    Get NSE Block Deals data from JSON file
+    
+    Args:
+        from_date: Start date in DD-MM-YYYY format (for filtering, optional)
+        to_date: End date in DD-MM-YYYY format (for filtering, optional)
+    
+    Returns:
+        List of block deals from saved JSON file
+    """
+    try:
+        data = _read_json_file("block_deals.json")
+        
+        # If dates provided, filter the data (optional filtering)
+        if from_date or to_date:
+            # This is a simple implementation - you can enhance filtering logic
+            if isinstance(data, dict) and "data" in data:
+                filtered_data = data["data"]
+                # Add date filtering logic here if needed
+                data["data"] = filtered_data
+                data["count"] = len(filtered_data)
+        
+        return data
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading block deals: {str(e)}")
+
+
+@app.get("/nse/bulk-deals")
+@cached(ttl=CACHE_TTL["MARKET_DATA"])
+def api_bulk_deals(from_date: str = None, to_date: str = None):
+    """
+    Get NSE Bulk Deals data from JSON file
+    
+    Args:
+        from_date: Start date in DD-MM-YYYY format (for filtering, optional)
+        to_date: End date in DD-MM-YYYY format (for filtering, optional)
+    
+    Returns:
+        List of bulk deals from saved JSON file
+    """
+    try:
+        data = _read_json_file("bulk_deals.json")
+        
+        # If dates provided, filter the data (optional filtering)
+        if from_date or to_date:
+            if isinstance(data, dict) and "data" in data:
+                filtered_data = data["data"]
+                # Add date filtering logic here if needed
+                data["data"] = filtered_data
+                data["count"] = len(filtered_data)
+        
+        return data
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading bulk deals: {str(e)}")
+
+
+@app.get("/nse/fii-dii")
+@cached(ttl=CACHE_TTL["MARKET_DATA"])
+def api_fii_dii():
+    """
+    Get FII/DII Trading Activity data from JSON file
+    
+    Returns:
+        FII and DII trading activity data from saved JSON file
+    """
+    try:
+        data = _read_json_file("fii_dii.json")
+        return data
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading FII/DII data: {str(e)}")
+
+
+@app.get("/nse/past-results/{symbol}")
+@cached(ttl=CACHE_TTL["MARKET_DATA"])
+def api_past_results(symbol: str):
+    """
+    Get NSE Past Results for a company from JSON file
+    
+    Args:
+        symbol: Stock symbol (e.g., RELIANCE, TCS, INFY)
+    
+    Returns:
+        Past financial results for the company from saved JSON file
+    """
+    try:
+        all_results = _read_json_file("past_results.json")
+        print(all_results)
+        symbol_upper = symbol.upper()
+        
+        if isinstance(all_results, dict) and symbol_upper in all_results:
+            return all_results[symbol_upper]
+        else:
+            # Return not found response
+            return {
+                "status": "not_found",
+                "symbol": symbol_upper,
+                "message": f"Past results not found for {symbol_upper}. Run fetch_nse_data.py to fetch data.",
+                "timestamp": datetime.now().isoformat()
+            }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading past results for {symbol}: {str(e)}")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(

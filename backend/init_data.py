@@ -19,7 +19,32 @@ DEFAULT_DATA = {
         "BANKNIFTY": {"status": "unavailable", "reason": "Data not yet fetched"},
         "SENSEX": {"status": "unavailable", "reason": "Data not yet fetched"},
         "GOLDCOM": {"status": "unavailable", "reason": "Data not yet fetched"}
-    }
+    },
+    "block_deals.json": {
+        "status": "unavailable",
+        "reason": "Data not yet fetched",
+        "from_date": None,
+        "to_date": None,
+        "count": 0,
+        "data": [],
+        "timestamp": None
+    },
+    "bulk_deals.json": {
+        "status": "unavailable",
+        "reason": "Data not yet fetched",
+        "from_date": None,
+        "to_date": None,
+        "count": 0,
+        "data": [],
+        "timestamp": None
+    },
+    "fii_dii.json": {
+        "status": "unavailable",
+        "reason": "Data not yet fetched",
+        "data": {},
+        "timestamp": None
+    },
+    "past_results.json": {}
 }
 
 def init_data_files():

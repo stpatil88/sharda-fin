@@ -80,7 +80,7 @@ export default function MarketNews() {
   if (loading) {
     return (
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[95%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center">
             <RefreshCw className="w-8 h-8 text-primary-600 animate-spin" />
             <span className="ml-2 text-gray-600">Loading market data...</span>
@@ -272,7 +272,7 @@ export default function MarketNews() {
             </div>
 
             {/* FII/DII Data */}
-            <div className="card">
+            {/* <div className="card">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">FII/DII Data</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
@@ -289,7 +289,7 @@ export default function MarketNews() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

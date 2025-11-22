@@ -35,3 +35,4 @@ backend/logs/
 *.swo
 .DS_Store
 Thumbs.db
+mobile-app/*
