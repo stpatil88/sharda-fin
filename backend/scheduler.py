@@ -121,6 +121,166 @@ def run_market_news_scraper():
     except Exception as e:
         logging.error(f"❌ Error running scape_market_news.py: {str(e)}")
 
+def run_opening_range_breakout():
+    """Run opening_range_break.py script at 9:20 AM to detect opening range breakouts"""
+    # Check if weekday
+    try:
+        import pytz
+        ist = pytz.timezone('Asia/Kolkata')
+        now = datetime.now(ist)
+    except ImportError:
+        now = datetime.now()
+    
+    if now.weekday() >= 5:  # Saturday or Sunday
+        logging.info("Weekend detected, skipping opening_range_break.py")
+        return
+    
+    try:
+        logging.info("Starting opening_range_break.py...")
+        script_path = os.path.join(SCRIPT_DIR, "opening_range_break.py")
+        python_cmd = get_python_command()
+        
+        result = subprocess.run(
+            [python_cmd, script_path],
+            cwd=SCRIPT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=120  # 2 minute timeout
+        )
+        
+        if result.returncode == 0:
+            logging.info(f"✅ opening_range_break.py completed successfully")
+            if result.stdout:
+                logging.debug(f"Output: {result.stdout}")
+        else:
+            logging.error(f"❌ opening_range_break.py failed with return code {result.returncode}")
+            if result.stderr:
+                logging.error(f"Error: {result.stderr}")
+    except subprocess.TimeoutExpired:
+        logging.error("❌ opening_range_break.py timed out after 2 minutes")
+    except Exception as e:
+        logging.error(f"❌ Error running opening_range_break.py: {str(e)}")
+
+def run_first_five_signal():
+    """Run first_five_signal.py script at 9:20 AM to detect 5-min close > prev day high"""
+    # Check if weekday
+    try:
+        import pytz
+        ist = pytz.timezone('Asia/Kolkata')
+        now = datetime.now(ist)
+    except ImportError:
+        now = datetime.now()
+    
+    if now.weekday() >= 5:  # Saturday or Sunday
+        logging.info("Weekend detected, skipping first_five_signal.py")
+        return
+    
+    try:
+        logging.info("Starting first_five_signal.py...")
+        script_path = os.path.join(SCRIPT_DIR, "first_five_signal.py")
+        python_cmd = get_python_command()
+        
+        result = subprocess.run(
+            [python_cmd, script_path],
+            cwd=SCRIPT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=300  # 5 minute timeout
+        )
+        
+        if result.returncode == 0:
+            logging.info(f"✅ first_five_signal.py completed successfully")
+            if result.stdout:
+                logging.debug(f"Output: {result.stdout}")
+        else:
+            logging.error(f"❌ first_five_signal.py failed with return code {result.returncode}")
+            if result.stderr:
+                logging.error(f"Error: {result.stderr}")
+    except subprocess.TimeoutExpired:
+        logging.error("❌ first_five_signal.py timed out after 5 minutes")
+    except Exception as e:
+        logging.error(f"❌ Error running first_five_signal.py: {str(e)}")
+
+def run_btst_scanner():
+    """Run btst.py script at 3:15 PM to detect BTST opportunities"""
+    # Check if weekday
+    try:
+        import pytz
+        ist = pytz.timezone('Asia/Kolkata')
+        now = datetime.now(ist)
+    except ImportError:
+        now = datetime.now()
+    
+    if now.weekday() >= 5:  # Saturday or Sunday
+        logging.info("Weekend detected, skipping btst.py")
+        return
+    
+    try:
+        logging.info("Starting btst.py...")
+        script_path = os.path.join(SCRIPT_DIR, "btst.py")
+        python_cmd = get_python_command()
+        
+        result = subprocess.run(
+            [python_cmd, script_path],
+            cwd=SCRIPT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=300  # 5 minute timeout (scanning 200 stocks takes time)
+        )
+        
+        if result.returncode == 0:
+            logging.info(f"✅ btst.py completed successfully")
+            if result.stdout:
+                logging.debug(f"Output: {result.stdout}")
+        else:
+            logging.error(f"❌ btst.py failed with return code {result.returncode}")
+            if result.stderr:
+                logging.error(f"Error: {result.stderr}")
+    except subprocess.TimeoutExpired:
+        logging.error("❌ btst.py timed out after 5 minutes")
+    except Exception as e:
+        logging.error(f"❌ Error running btst.py: {str(e)}")
+
+def run_supertrend_signal():
+    """Run supertrend_signal.py script at 3:15 PM to detect investment stocks"""
+    # Check if weekday
+    try:
+        import pytz
+        ist = pytz.timezone('Asia/Kolkata')
+        now = datetime.now(ist)
+    except ImportError:
+        now = datetime.now()
+    
+    if now.weekday() >= 5:  # Saturday or Sunday
+        logging.info("Weekend detected, skipping supertrend_signal.py")
+        return
+    
+    try:
+        logging.info("Starting supertrend_signal.py...")
+        script_path = os.path.join(SCRIPT_DIR, "supertrend_signal.py")
+        python_cmd = get_python_command()
+        
+        result = subprocess.run(
+            [python_cmd, script_path],
+            cwd=SCRIPT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=600  # 10 minute timeout (monthly calculations take time)
+        )
+        
+        if result.returncode == 0:
+            logging.info(f"✅ supertrend_signal.py completed successfully")
+            if result.stdout:
+                logging.debug(f"Output: {result.stdout}")
+        else:
+            logging.error(f"❌ supertrend_signal.py failed with return code {result.returncode}")
+            if result.stderr:
+                logging.error(f"Error: {result.stderr}")
+    except subprocess.TimeoutExpired:
+        logging.error("❌ supertrend_signal.py timed out after 10 minutes")
+    except Exception as e:
+        logging.error(f"❌ Error running supertrend_signal.py: {str(e)}")
+
 def run_nse_data_fetcher():
     """Run fetch_nse_data.py script"""
     if not is_market_hours():
@@ -160,6 +320,10 @@ def main():
     logging.info("  - angel_one_api.py: Every 5 minutes (9 AM - 3:30 PM, Mon-Fri)")
     logging.info("  - scape_market_news.py: Every hour (9 AM - 3:30 PM, Mon-Fri)")
     logging.info("  - fetch_nse_data.py: Every 30 minutes (9 AM - 3:30 PM, Mon-Fri)")
+    logging.info("  - opening_range_break.py: Once at 9:20 AM (Mon-Fri)")
+    logging.info("  - first_five_signal.py: Once at 9:20 AM (Mon-Fri)")
+    logging.info("  - btst.py: Once at 3:15 PM (Mon-Fri)")
+    logging.info("  - supertrend_signal.py: Once at 3:15 PM (Mon-Fri)")
     
     # Schedule angel_one_api.py every 5 minutes
     schedule.every(5).minutes.do(run_angel_one_api)
@@ -169,6 +333,18 @@ def main():
     
     # Schedule fetch_nse_data.py every 30 minutes
     schedule.every(30).minutes.do(run_nse_data_fetcher)
+    
+    # Schedule opening_range_break.py at 9:20 AM every day (weekday check inside function)
+    schedule.every().day.at("09:20").do(run_opening_range_breakout)
+    
+    # Schedule first_five_signal.py at 9:20 AM every day (weekday check inside function)
+    schedule.every().day.at("09:20").do(run_first_five_signal)
+    
+    # Schedule btst.py at 3:15 PM every day (weekday check inside function)
+    schedule.every().day.at("15:15").do(run_btst_scanner)
+    
+    # Schedule supertrend_signal.py at 3:15 PM every day (weekday check inside function)
+    schedule.every().day.at("15:15").do(run_supertrend_signal)
     
     # Also run on startup if within market hours
     if is_market_hours():
