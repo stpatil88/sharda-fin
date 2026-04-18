@@ -1,5 +1,11 @@
 import yfinance as yf
 import pandas as pd
+import sys
+
+# Reconfigure stdout/stderr to use utf-8 on Windows
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
 
 # -------------------------------------------------
 # CONFIG
@@ -10,12 +16,15 @@ import warnings
 warnings.filterwarnings('ignore')
 import requests
 
-def telegram_bot_sendtext(bot_message, bot_id='',
-                          bot_token=''
+def telegram_bot_sendtext(bot_message, bot_id='-4179060356',
+                          bot_token='2042514901:AAGbpdvipIvT7siKZlqgJNz8PUXUajSMOTc'
     ):
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_id + '&parse_mode=Markdown&text=' + bot_message
-    response = requests.get(send_text)
-    print(response.text)
+    try:
+        response = requests.get(send_text, timeout=10)
+        print(response.text)
+    except Exception as e:
+        print(f"Failed to send telegram message: {e}")
     
 # -------------------------------------------------
 # NIFTY 200 SYMBOLS (PARTIAL — EXTEND FULL LIST)

@@ -121,8 +121,13 @@ def run_market_news_scraper():
     except Exception as e:
         logging.error(f"❌ Error running scape_market_news.py: {str(e)}")
 
-def run_opening_range_breakout():
-    """Run opening_range_break.py script at 9:20 AM to detect opening range breakouts"""
+# Global variable to track if ORB process is running
+orb_process = None
+
+def start_opening_range_breakout():
+    """Start opening_range_break.py as a background process (runs its own 60-second loop)"""
+    global orb_process
+    
     # Check if weekday
     try:
         import pytz
@@ -132,34 +137,30 @@ def run_opening_range_breakout():
         now = datetime.now()
     
     if now.weekday() >= 5:  # Saturday or Sunday
-        logging.info("Weekend detected, skipping opening_range_break.py")
+        logging.info("Weekend detected, not starting opening_range_break.py")
+        return
+    
+    # Check if already running
+    if orb_process is not None and orb_process.poll() is None:
+        logging.debug("opening_range_break.py is already running")
         return
     
     try:
-        logging.info("Starting opening_range_break.py...")
+        logging.info("🚀 Starting opening_range_break.py as background process (loops every 60s)...")
         script_path = os.path.join(SCRIPT_DIR, "opening_range_break.py")
         python_cmd = get_python_command()
         
-        result = subprocess.run(
+        # Start as background process (no timeout - it handles its own loop)
+        orb_process = subprocess.Popen(
             [python_cmd, script_path],
             cwd=SCRIPT_DIR,
-            capture_output=True,
-            text=True,
-            timeout=120  # 2 minute timeout
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
         )
         
-        if result.returncode == 0:
-            logging.info(f"✅ opening_range_break.py completed successfully")
-            if result.stdout:
-                logging.debug(f"Output: {result.stdout}")
-        else:
-            logging.error(f"❌ opening_range_break.py failed with return code {result.returncode}")
-            if result.stderr:
-                logging.error(f"Error: {result.stderr}")
-    except subprocess.TimeoutExpired:
-        logging.error("❌ opening_range_break.py timed out after 2 minutes")
+        logging.info(f"✅ opening_range_break.py started (PID: {orb_process.pid})")
     except Exception as e:
-        logging.error(f"❌ Error running opening_range_break.py: {str(e)}")
+        logging.error(f"❌ Error starting opening_range_break.py: {str(e)}")
 
 def run_first_five_signal():
     """Run first_five_signal.py script at 9:20 AM to detect 5-min close > prev day high"""
@@ -320,7 +321,7 @@ def main():
     logging.info("  - angel_one_api.py: Every 5 minutes (9 AM - 3:30 PM, Mon-Fri)")
     logging.info("  - scape_market_news.py: Every hour (9 AM - 3:30 PM, Mon-Fri)")
     logging.info("  - fetch_nse_data.py: Every 30 minutes (9 AM - 3:30 PM, Mon-Fri)")
-    logging.info("  - opening_range_break.py: Once at 9:20 AM (Mon-Fri)")
+    logging.info("  - opening_range_break.py: Background process (loops every 60s, 9:20 AM - 3:15 PM)")
     logging.info("  - first_five_signal.py: Once at 9:20 AM (Mon-Fri)")
     logging.info("  - btst.py: Once at 3:15 PM (Mon-Fri)")
     logging.info("  - supertrend_signal.py: Once at 3:15 PM (Mon-Fri)")
@@ -334,8 +335,8 @@ def main():
     # Schedule fetch_nse_data.py every 30 minutes
     schedule.every(30).minutes.do(run_nse_data_fetcher)
     
-    # Schedule opening_range_break.py at 9:20 AM every day (weekday check inside function)
-    schedule.every().day.at("09:20").do(run_opening_range_breakout)
+    # Start opening_range_break.py as background process (it handles its own 60-second loop)
+    start_opening_range_breakout()
     
     # Schedule first_five_signal.py at 9:20 AM every day (weekday check inside function)
     schedule.every().day.at("09:20").do(run_first_five_signal)

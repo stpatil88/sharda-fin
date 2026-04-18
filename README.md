@@ -1,71 +1,66 @@
 # Sharada Financial Services
 
-Empowering Smart Investments & Financial Awareness
+Sharada Financial Services is a Next.js site focused on Indian market awareness, basic research content, and lead-generation for financial services.
 
-## Project Overview
+## Vercel Deployment Model
 
-Sharada Financial Services is a comprehensive financial services website designed to:
-- Create awareness about Investment & Trading in Indian exchanges
-- Provide live market data, research insights, and analysis
-- Offer information on Demat account opening, mutual funds, insurance, and loans
-- Enable visitors to connect and share market insights via WhatsApp
+This project now deploys as a pure Next.js app on Vercel Hobby.
 
-## Technology Stack
+Live data is served through same-origin API routes:
+- `/api/market/indices`
+- `/api/market/index?symbol=NIFTY|SENSEX|BANKNIFTY`
+- `/api/market/movers?limit=10`
+- `/api/news?limit=10`
 
-- **Frontend**: Next.js 14 with React 18
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Charts**: Recharts
-- **Icons**: Lucide React
-- **Forms**: EmailJS
-- **APIs**: Market data APIs, News APIs
+The deployed Vercel edition keeps:
+- live index quotes
+- top gainers and losers
+- English market news
 
-## Getting Started
+The following backend-driven NSE features are intentionally paused in this deployment:
+- FII/DII
+- block deals
+- bulk deals
+- put/call ratio
+- past results
 
-1. Install dependencies:
+## Tech Stack
+
+- Next.js 14
+- React 18
+- Tailwind CSS
+- Recharts
+- Lucide React
+- `yahoo-finance2` for server-side market quotes
+- Marketaux for live news
+
+## Environment Variables
+
+Create `.env.local` with:
+
+```bash
+MARKETAUX_API_KEY=your_marketaux_key
+```
+
+`MARKETAUX_API_KEY` is server-side only and should be added in Vercel project settings for production.
+
+## Local Development
+
 ```bash
 npm install
-```
-
-2. Create environment file:
-```bash
-cp .env.example .env.local
-```
-
-3. Add your API keys to `.env.local`
-
-4. Run the development server:
-```bash
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+Open `http://localhost:3000`.
 
-## Project Structure
+## Production Build
 
-```
-src/
-├── components/          # Reusable UI components
-├── pages/              # Next.js pages
-├── hooks/              # Custom React hooks
-├── utils/              # Utility functions
-├── styles/             # Global styles
-└── assets/             # Static assets
+```bash
+npm run build
+npm run start
 ```
 
-## Features
+## Notes
 
-- Live market data integration
-- News feed with auto-refresh
-- WhatsApp sharing functionality
-- Contact form integration
-- Responsive design
-- SEO optimized
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+- The `backend/` folder is kept for archival/reference purposes and is not part of the Vercel runtime path.
+- Yahoo Finance access is handled server-side only.

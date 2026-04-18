@@ -11,6 +11,8 @@ export default function BlockDeals() {
 
   useEffect(() => {
     fetchBlockDeals();
+    // This component is retained for reference and is no longer part of the live Vercel flow.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formatDate = (date) => {

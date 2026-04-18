@@ -1,32 +1,46 @@
 """
-Opening Range Breakout (ORB) Detection Script
+Opening Range Breakout (ORB) Detection Script using yfinance
 
-This script detects opening range breakouts at 9:20 AM IST.
+This script detects opening range breakouts between 9:20 AM and 3:15 PM IST.
 The opening range is defined as the high and low of the first 5 minutes (9:15-9:20 AM).
 A breakout is detected when the current price breaks above the opening range high (BUY)
 or below the opening range low (SELL).
 
-Scheduled to run at 9:20 AM IST, Monday-Friday.
+Features:
+- Runs continuously in a loop every 60 seconds during market hours
+- Filters out stocks that have already triggered a breakout to avoid duplicate alerts
+- Uses yfinance for data
+- Sends Telegram alerts
 """
 
+import yfinance as yf
+import pandas as pd
+import numpy as np
 import datetime
 import json
 import os
 import logging
 import warnings
+import time
+import requests
 from typing import Dict, List, Optional, Any
-
-import pandas as pd
 import pytz
 
+import sys
+
 warnings.filterwarnings('ignore')
+
+# Reconfigure stdout/stderr to use utf-8 on Windows to support emojis
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('opening_breakout.log'),
+        logging.FileHandler('opening_breakout.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )
@@ -39,182 +53,123 @@ DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 # IST timezone
 IST = pytz.timezone('Asia/Kolkata')
 
-# Default stock list - Nifty 50 stocks (can be extended)
-NIFTY_50_STOCKS = [
-    "RELIANCE", "TCS", "HDFCBANK", "INFY", "ICICIBANK",
-    "HINDUNILVR", "SBIN", "BHARTIARTL", "ITC", "KOTAKBANK",
-    "LT", "AXISBANK", "ASIANPAINT", "MARUTI", "TITAN",
-    "BAJFINANCE", "SUNPHARMA", "WIPRO", "ULTRACEMCO", "NESTLEIND",
-    "HCLTECH", "M&M", "POWERGRID", "NTPC", "TECHM",
-    "TATAMOTORS", "INDUSINDBK", "BAJAJFINSV", "ONGC", "ADANIPORTS",
-    "JSWSTEEL", "HINDALCO", "TATASTEEL", "GRASIM", "CIPLA",
-    "DRREDDY", "BRITANNIA", "APOLLOHOSP", "COALINDIA", "DIVISLAB",
-    "EICHERMOT", "BPCL", "HEROMOTOCO", "TATACONSUM", "BAJAJ-AUTO",
-    "SHRIRAMFIN", "SBILIFE", "HDFCLIFE", "LTIM", "ADANIENT"
+# Default stock list - Nifty 200 stocks with .NS suffix for yfinance
+NIFTY_200_SYMBOLS = [
+    '360ONE.NS', 'ABB.NS', 'ACC.NS', 'APLAPOLLO.NS', 'AUBANK.NS', 'ADANIENSOL.NS', 
+    'ADANIENT.NS', 'ADANIGREEN.NS', 'ADANIPORTS.NS', 'ADANIPOWER.NS', 'ATGL.NS', 
+    'ABCAPITAL.NS', 'ALKEM.NS', 'AMBUJACEM.NS', 'APOLLOHOSP.NS', 'ASHOKLEY.NS', 
+    'ASIANPAINT.NS', 'ASTRAL.NS', 'AUROPHARMA.NS', 'DMART.NS', 'AXISBANK.NS', 
+    'BSE.NS', 'BAJAJ-AUTO.NS', 'BAJFINANCE.NS', 'BAJAJFINSV.NS', 'BAJAJHLDNG.NS', 
+    'BAJAJHFL.NS', 'BANKBARODA.NS', 'BANKINDIA.NS', 'BDL.NS', 'BEL.NS', 
+    'BHARATFORG.NS', 'BHEL.NS', 'BPCL.NS', 'BHARTIARTL.NS', 'BHARTIHEXA.NS', 
+    'BIOCON.NS', 'BLUESTARCO.NS', 'BOSCHLTD.NS', 'BRITANNIA.NS', 'CGPOWER.NS', 
+    'CANBK.NS', 'CHOLAFIN.NS', 'CIPLA.NS', 'COALINDIA.NS', 'COCHINSHIP.NS', 
+    'COFORGE.NS', 'COLPAL.NS', 'CONCOR.NS', 'COROMANDEL.NS', 'CUMMINSIND.NS', 
+    'DLF.NS', 'DABUR.NS', 'DIVISLAB.NS', 'DIXON.NS', 'DRREDDY.NS', 'EICHERMOT.NS', 
+    'ETERNAL.NS', 'EXIDEIND.NS', 'NYKAA.NS', 'FEDERALBNK.NS', 'FORTIS.NS', 
+    'GAIL.NS', 'GMRAIRPORT.NS', 'GLENMARK.NS', 'GODFRYPHLP.NS', 'GODREJCP.NS', 
+    'GODREJPROP.NS', 'GRASIM.NS', 'HCLTECH.NS', 'HDFCAMC.NS', 'HDFCBANK.NS', 
+    'HDFCLIFE.NS', 'HAVELLS.NS', 'HEROMOTOCO.NS', 'HINDALCO.NS', 'HAL.NS', 
+    'HINDPETRO.NS', 'HINDUNILVR.NS', 'HINDZINC.NS', 'POWERINDIA.NS', 'HUDCO.NS', 
+    'HYUNDAI.NS', 'ICICIBANK.NS', 'ICICIGI.NS', 'IDFCFIRSTB.NS', 'IRB.NS', 
+    'ITCHOTELS.NS', 'ITC.NS', 'INDIANB.NS', 'INDHOTEL.NS', 'IOC.NS', 'IRCTC.NS', 
+    'IRFC.NS', 'IREDA.NS', 'IGL.NS', 'INDUSTOWER.NS', 'INDUSINDBK.NS', 'NAUKRI.NS', 
+    'INFY.NS', 'INDIGO.NS', 'JSWENERGY.NS', 'JSWSTEEL.NS', 'JINDALSTEL.NS', 
+    'JIOFIN.NS', 'JUBLFOOD.NS', 'KEI.NS', 'KPITTECH.NS', 'KALYANKJIL.NS', 
+    'KOTAKBANK.NS', 'LTF.NS', 'LICHSGFIN.NS', 'LTIM.NS', 'LT.NS', 'LICI.NS', 
+    'LODHA.NS', 'LUPIN.NS', 'MRF.NS', 'M&MFIN.NS', 'M&M.NS', 'MANKIND.NS', 
+    'MARICO.NS', 'MARUTI.NS', 'MFSL.NS', 'MAXHEALTH.NS', 'MAZDOCK.NS', 
+    'MOTILALOFS.NS', 'MPHASIS.NS', 'MUTHOOTFIN.NS', 'NHPC.NS', 'NMDC.NS', 
+    'NTPCGREEN.NS', 'NTPC.NS', 'NATIONALUM.NS', 'NESTLEIND.NS', 'OBEROIRLTY.NS', 
+    'ONGC.NS', 'OIL.NS', 'PAYTM.NS', 'OFSS.NS', 'POLICYBZR.NS', 'PIIND.NS', 
+    'PAGEIND.NS', 'PATANJALI.NS', 'PERSISTENT.NS', 'PHOENIXLTD.NS', 'PIDILITIND.NS', 
+    'POLYCAB.NS', 'PFC.NS', 'POWERGRID.NS', 'PREMIERENE.NS', 'PRESTIGE.NS', 
+    'PNB.NS', 'RECLTD.NS', 'RVNL.NS', 'RELIANCE.NS', 'SBICARD.NS', 'SBILIFE.NS', 
+    'SRF.NS', 'MOTHERSON.NS', 'SHREECEM.NS', 'SHRIRAMFIN.NS', 'ENRIN.NS', 
+    'SIEMENS.NS', 'SOLARINDS.NS', 'SONACOMS.NS', 'SBIN.NS', 'SAIL.NS', 
+    'SUNPHARMA.NS', 'SUPREMEIND.NS', 'SUZLON.NS', 'SWIGGY.NS', 'TVSMOTOR.NS', 
+    'TATACOMM.NS', 'TCS.NS', 'TATACONSUM.NS', 'TATAELXSI.NS', 'TMPV.NS', 
+    'TATAPOWER.NS', 'TATASTEEL.NS', 'TATATECH.NS', 'TECHM.NS', 'TITAN.NS', 
+    'TORNTPHARM.NS', 'TORNTPOWER.NS', 'TRENT.NS', 'TIINDIA.NS', 'UPL.NS', 
+    'ULTRACEMCO.NS', 'UNIONBANK.NS', 'UNITDSPR.NS', 'VBL.NS', 'VEDL.NS', 
+    'VMM.NS', 'IDEA.NS', 'VOLTAS.NS', 'WAAREEENER.NS', 'WIPRO.NS', 'YESBANK.NS', 
+    'ZYDUSLIFE.NS'
 ]
-import requests
 
-def telegram_bot_sendtext(bot_message, bot_id='',
-                          bot_token=''
+
+def telegram_bot_sendtext(bot_message, bot_id='-100181622905',
+                          bot_token='2042514901:AAGbpdvipIvT7siKZlqgJNz8PUXUajSMOTc'
     ):
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_id + '&parse_mode=Markdown&text=' + bot_message
-    response = requests.get(send_text)
-    print(response.text)
-
-
-def get_authenticated_client():
-    """
-    Get an authenticated SmartConnect client from angel_one_api module.
-    
-    Returns:
-        SmartConnect object or None if authentication fails
-    """
     try:
-        from angel_one_api import order
-        client = order()
-        if client:
-            logger.info("✅ Successfully authenticated with Angel One API")
-            return client
-        else:
-            logger.error("❌ Failed to authenticate with Angel One API")
-            return None
+        response = requests.get(send_text, timeout=10)
+        print(response.text)
     except Exception as e:
-        logger.error(f"❌ Error during authentication: {str(e)}")
-        return None
+        logger.error(f"Failed to send telegram message: {e}")
 
 
-def get_stock_tokens(stocks: List[str]) -> Dict[str, Dict]:
+def get_opening_range_yf(symbol: str) -> Optional[Dict]:
     """
-    Get symbol tokens for the given stock list from the scrip master.
+    Get the opening range (high and low) for the first 5-minute candle using yfinance.
     
     Args:
-        stocks: List of stock names to look up
+        symbol: Stock symbol with .NS suffix (e.g., 'RELIANCE.NS')
         
     Returns:
-        Dictionary mapping stock names to their token info
+        Dictionary with 'high', 'low', 'open', 'close', 'current_price' or None if error
     """
     try:
-        import requests
-        
-        logger.info(f"📋 Fetching symbol tokens for {len(stocks)} stocks...")
-        
-        BASE_URL = 'https://margincalculator.angelbroking.com/OpenAPI_File/files/OpenAPIScripMaster.json'
-        data = requests.get(BASE_URL).json()
-        df = pd.DataFrame(data)
-        
-        # Filter for equity stocks in NSE
-        df_nse = df[df['exch_seg'] == 'NSE']
-        df_equity = df_nse[df_nse['symbol'].str.endswith('-EQ')]
-        
-        stock_tokens = {}
-        for stock in stocks:
-            symbol = f"{stock}-EQ"
-            match = df_equity[df_equity['symbol'] == symbol]
-            if not match.empty:
-                row = match.iloc[0]
-                stock_tokens[stock] = {
-                    'token': row['token'],
-                    'symbol': row['symbol'],
-                    'name': row['name'],
-                    'exch_seg': row['exch_seg']
-                }
-            else:
-                logger.warning(f"⚠️ Could not find token for {stock}")
-        
-        logger.info(f"✅ Found tokens for {len(stock_tokens)}/{len(stocks)} stocks")
-        return stock_tokens
-        
-    except Exception as e:
-        logger.error(f"❌ Error fetching stock tokens: {str(e)}")
-        return {}
-
-
-def get_opening_range(client, token: str, exchange: str = "NSE") -> Optional[Dict]:
-    """
-    Get the opening range (high and low) for the first 5-minute candle.
-    
-    Args:
-        client: SmartConnect client object
-        token: Symbol token
-        exchange: Exchange segment (default: NSE)
-        
-    Returns:
-        Dictionary with 'high', 'low', 'open', 'close' or None if error
-    """
-    try:
-        now = datetime.datetime.now(IST)
-        today = now.strftime('%Y-%m-%d')
-        
-        # Fetch candle data for today's opening
-        candle_data = client.getCandleData(historicDataParams={
-            "exchange": exchange,
-            "symboltoken": str(token),
-            "interval": "FIVE_MINUTE",
-            "fromdate": f"{today} 09:15",
-            "todate": f"{today} 09:20"
-        })
-        
-        if candle_data and candle_data.get('data') and len(candle_data['data']) > 0:
-            # The first candle is the opening range
-            candle = candle_data['data'][0]
-            # Format: [Datetime, Open, High, Low, Close, Volume]
-            return {
-                'datetime': candle[0],
-                'open': candle[1],
-                'high': candle[2],
-                'low': candle[3],
-                'close': candle[4],
-                'volume': candle[5]
-            }
-        else:
-            logger.warning(f"⚠️ No candle data returned for token {token}")
-            return None
-            
-    except Exception as e:
-        logger.error(f"❌ Error getting opening range for token {token}: {str(e)}")
-        return None
-
-
-def get_current_price(client, token: str, symbol: str, exchange: str = "NSE") -> Optional[float]:
-    """
-    Get the current LTP (Last Traded Price) for a stock.
-    
-    Args:
-        client: SmartConnect client object
-        token: Symbol token
-        symbol: Trading symbol
-        exchange: Exchange segment (default: NSE)
-        
-    Returns:
-        Current price or None if error
-    """
-    try:
-        ltp_data = client.ltpData(
-            tradingsymbol=symbol,
-            symboltoken=str(token),
-            exchange=exchange
+        # Download 5-minute data for today
+        df = yf.download(
+            symbol,
+            period="1d",
+            interval="5m",
+            progress=False
         )
         
-        if ltp_data and ltp_data.get('data'):
-            return ltp_data['data'].get('ltp')
-        return None
+        if df.empty:
+            return None
+        
+        # Handle multi-level columns from yfinance
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.droplevel(1)
+        
+        # Convert to IST
+        df.index = df.index.tz_convert("Asia/Kolkata")
+        
+        # Get the first 5-minute candle (9:15 AM)
+        opening_candle = df[df.index.strftime("%H:%M") == "09:15"]
+        
+        if opening_candle.empty:
+            # Try to get the first available candle as fallback
+            if len(df) > 0:
+                opening_candle = df.iloc[[0]]
+            else:
+                return None
+        
+        opening_candle = opening_candle.iloc[0]
+        
+        # Get current (latest) price
+        current_price = float(df['Close'].iloc[-1])
+        
+        return {
+            'open': float(opening_candle['Open']),
+            'high': float(opening_candle['High']),
+            'low': float(opening_candle['Low']),
+            'close': float(opening_candle['Close']),
+            'current_price': current_price,
+            'datetime': str(df.index[-1])
+        }
         
     except Exception as e:
-        logger.error(f"❌ Error getting LTP for {symbol}: {str(e)}")
+        logger.error(f"❌ Error getting opening range for {symbol}: {str(e)}")
         return None
 
 
 def detect_breakout(or_high: float, or_low: float, current_price: float) -> Optional[str]:
     """
     Detect if there's a breakout based on opening range and current price.
-    
-    Args:
-        or_high: Opening range high
-        or_low: Opening range low
-        current_price: Current price
-        
-    Returns:
-        'BUY' if breakout above high, 'SELL' if breakout below low, None otherwise
+    Returns 'BUY', 'SELL', or None.
     """
     if current_price > or_high:
         return 'BUY'
@@ -224,18 +179,7 @@ def detect_breakout(or_high: float, or_low: float, current_price: float) -> Opti
 
 
 def calculate_breakout_percentage(or_high: float, or_low: float, current_price: float, side: str) -> float:
-    """
-    Calculate the breakout percentage from the opening range boundary.
-    
-    Args:
-        or_high: Opening range high
-        or_low: Opening range low
-        current_price: Current price
-        side: 'BUY' or 'SELL'
-        
-    Returns:
-        Percentage breakout from boundary
-    """
+    """Calculate the breakout percentage from the opening range boundary."""
     if side == 'BUY':
         return round(((current_price - or_high) / or_high) * 100, 3)
     elif side == 'SELL':
@@ -243,137 +187,8 @@ def calculate_breakout_percentage(or_high: float, or_low: float, current_price: 
     return 0.0
 
 
-def run_opening_range_breakout(stock_list: Optional[List[str]] = None) -> Dict[str, Any]:
-    """
-    Main function to detect opening range breakouts.
-    
-    Args:
-        stock_list: Optional list of stocks to monitor (defaults to NIFTY_50_STOCKS)
-        
-    Returns:
-        Dictionary containing timestamp and detected signals
-    """
-    logger.info("=" * 60)
-    logger.info("🚀 Starting Opening Range Breakout Detection")
-    logger.info("=" * 60)
-    
-    if stock_list is None:
-        stock_list = NIFTY_50_STOCKS
-    
-    result = {
-        "timestamp": datetime.datetime.now(IST).isoformat(),
-        "date": datetime.datetime.now(IST).strftime('%Y-%m-%d'),
-        "detection_time": datetime.datetime.now(IST).strftime('%H:%M:%S'),
-        "stocks_analyzed": len(stock_list),
-        "signals": []
-    }
-    
-    # Get authenticated client
-    client = get_authenticated_client()
-    if not client:
-        result["error"] = "Failed to authenticate with Angel One API"
-        logger.error("❌ Cannot proceed without authentication")
-        return result
-    
-    # Get stock tokens
-    stock_tokens = get_stock_tokens(stock_list)
-    if not stock_tokens:
-        result["error"] = "Failed to fetch stock tokens"
-        logger.error("❌ Cannot proceed without stock tokens")
-        return result
-    
-    # Process each stock
-    import time
-    signals = []
-    
-    for stock_name, token_info in stock_tokens.items():
-        try:
-            logger.info(f"📊 Analyzing {stock_name}...")
-            
-            # Get opening range
-            opening_range = get_opening_range(
-                client,
-                token_info['token'],
-                token_info['exch_seg']
-            )
-            
-            if not opening_range:
-                logger.warning(f"⚠️ Skipping {stock_name} - no opening range data")
-                continue
-            
-            # Get current price
-            current_price = get_current_price(
-                client,
-                token_info['token'],
-                token_info['symbol'],
-                token_info['exch_seg']
-            )
-            
-            if not current_price:
-                logger.warning(f"⚠️ Skipping {stock_name} - no current price")
-                continue
-            
-            # Detect breakout
-            or_high = opening_range['high']
-            or_low = opening_range['low']
-            breakout_side = detect_breakout(or_high, or_low, current_price)
-            
-            if breakout_side:
-                breakout_pct = calculate_breakout_percentage(or_high, or_low, current_price, breakout_side)
-                
-                signal = {
-                    "stock": stock_name,
-                    "symbol": token_info['symbol'],
-                    "or_high": or_high,
-                    "or_low": or_low,
-                    "or_open": opening_range['open'],
-                    "or_close": opening_range['close'],
-                    "current_price": current_price,
-                    "side": breakout_side,
-                    "breakout_time": datetime.datetime.now(IST).isoformat(),
-                    "breakout_percentage": breakout_pct
-                }
-                signals.append(signal)
-                
-                emoji = "🟢" if breakout_side == "BUY" else "🔴"
-                logger.info(f"{emoji} BREAKOUT! {stock_name}: {breakout_side} @ ₹{current_price} (OR: {or_low}-{or_high})")
-                telegram_bot_sendtext(f"{emoji} BREAKOUT! {stock_name}: {breakout_side} @ ₹{current_price} (OR: {or_low}-{or_high})")
-            else:
-                logger.debug(f"⏸️ {stock_name}: No breakout (Price: {current_price}, Range: {or_low}-{or_high})")
-            
-            # Rate limiting - avoid API throttling
-            time.sleep(0.5)
-            
-        except Exception as e:
-            logger.error(f"❌ Error processing {stock_name}: {str(e)}")
-            continue
-    
-    result["signals"] = signals
-    result["signals_count"] = len(signals)
-    result["buy_signals"] = len([s for s in signals if s['side'] == 'BUY'])
-    result["sell_signals"] = len([s for s in signals if s['side'] == 'SELL'])
-    
-    logger.info("=" * 60)
-    logger.info(f"✅ Detection Complete!")
-    logger.info(f"   📊 Stocks Analyzed: {len(stock_tokens)}")
-    logger.info(f"   🎯 Total Signals: {len(signals)}")
-    logger.info(f"   🟢 BUY Signals: {result['buy_signals']}")
-    logger.info(f"   🔴 SELL Signals: {result['sell_signals']}")
-    logger.info("=" * 60)
-    
-    return result
-
-
 def save_breakout_signals(result: Dict[str, Any]) -> str:
-    """
-    Save breakout signals to a JSON file.
-    
-    Args:
-        result: Dictionary containing detection results
-        
-    Returns:
-        Path to the saved file
-    """
+    """Save breakout signals to a JSON file."""
     # Ensure data directory exists
     os.makedirs(DATA_DIR, exist_ok=True)
     
@@ -393,7 +208,7 @@ def save_breakout_signals(result: Dict[str, Any]) -> str:
     # Append new result
     existing_data.append(result)
     
-    # Keep only last 30 days of data
+    # Keep only last 1 day of data
     cutoff_date = (datetime.datetime.now(IST) - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
     existing_data = [d for d in existing_data if d.get('date', '9999-12-31') >= cutoff_date]
     
@@ -405,50 +220,172 @@ def save_breakout_signals(result: Dict[str, Any]) -> str:
     return output_file
 
 
-def main():
-    """Main entry point for the script."""
-    import argparse
+def run_opening_range_breakout(stock_list: List[str]) -> Dict[str, Any]:
+    """
+    Run detection on the provided list of stocks.
+    Returns dictionary with signals.
+    """
+    result = {
+        "timestamp": datetime.datetime.now(IST).isoformat(),
+        "date": datetime.datetime.now(IST).strftime('%Y-%m-%d'),
+        "detection_time": datetime.datetime.now(IST).strftime('%H:%M:%S'),
+        "stocks_analyzed": len(stock_list),
+        "signals": []
+    }
     
-    parser = argparse.ArgumentParser(description="Opening Range Breakout Detection")
-    parser.add_argument("--stocks", nargs="*", help="List of stock symbols to analyze")
-    parser.add_argument("--test", action="store_true", help="Run in test mode with limited stocks")
-    parser.add_argument("--no-save", action="store_true", help="Don't save results to file")
-    args = parser.parse_args()
+    signals = []
     
-    # Determine stock list
-    if args.test:
-        stock_list = ["RELIANCE", "TCS", "INFY", "HDFCBANK", "ICICIBANK"]
-        logger.info("🧪 Running in TEST mode with 5 stocks")
-    elif args.stocks:
-        stock_list = args.stocks
-        logger.info(f"📋 Running with custom stock list: {stock_list}")
-    else:
-        stock_list = NIFTY_50_STOCKS
-        logger.info(f"📋 Running with NIFTY 50 stocks ({len(stock_list)} stocks)")
+    # Shuffle list to avoid hitting same stocks first if needed, 
+    # but sequential is fine for now
+    for symbol in stock_list:
+        try:
+            # logger.debug(f"📊 Analyzing {symbol}...")
+            
+            # Get opening range and current price
+            data = get_opening_range_yf(symbol)
+            
+            if not data:
+                continue
+            
+            or_high = data['high']
+            or_low = data['low']
+            current_price = data['current_price']
+            
+            # Calculate opening range as percentage of price
+            range_value = or_high - or_low
+            range_percentage = (range_value / or_low) * 100 if or_low > 0 else 0
+            
+            # Skip if opening range is less than 0.75% of value
+            if range_percentage < 0.75:
+                # logger.debug(f"⏸️ {symbol}: Range too small ({range_percentage:.2f}% < 0.75%)")
+                continue
+            
+            # Detect breakout
+            breakout_side = detect_breakout(or_high, or_low, current_price)
+            
+            if breakout_side:
+                breakout_pct = calculate_breakout_percentage(or_high, or_low, current_price, breakout_side)
+                
+                # Extract stock name without .NS suffix
+                stock_name = symbol.replace('.NS', '')
+                
+                signal = {
+                    "stock": stock_name,
+                    "symbol": symbol,
+                    "or_high": round(or_high, 2),
+                    "or_low": round(or_low, 2),
+                    "or_open": round(data['open'], 2),
+                    "or_close": round(data['close'], 2),
+                    "current_price": round(current_price, 2),
+                    "side": breakout_side,
+                    "breakout_time": datetime.datetime.now(IST).isoformat(),
+                    "breakout_percentage": breakout_pct
+                }
+                signals.append(signal)
+                
+                emoji = "🟢" if breakout_side == "BUY" else "🔴"
+                msg = f"{emoji} BREAKOUT! {stock_name}: {breakout_side} @ ₹{current_price:.2f} (OR: {or_low:.2f}-{or_high:.2f})"
+                logger.info(msg)
+                telegram_bot_sendtext(msg)
+            
+        except Exception as e:
+            logger.error(f"❌ Error processing {symbol}: {str(e)}")
+            continue
     
-    # Run detection
-    result = run_opening_range_breakout(stock_list)
-    
-    # Save results
-    if not args.no_save:
-        save_breakout_signals(result)
-    
-    # Print summary
-    print("\n" + "=" * 60)
-    print("📊 OPENING RANGE BREAKOUT SIGNALS")
-    print("=" * 60)
-    
-    if result.get('signals'):
-        for signal in result['signals']:
-            emoji = "🟢 BUY" if signal['side'] == 'BUY' else "🔴 SELL"
-            print(f"{emoji} | {signal['stock']:15} | ₹{signal['current_price']:>10.2f} | Range: {signal['or_low']:.2f}-{signal['or_high']:.2f} | {signal['breakout_percentage']:+.2f}%")
-    else:
-        print("No breakout signals detected.")
-    
-    print("=" * 60 + "\n")
+    result["signals"] = signals
+    result["signals_count"] = len(signals)
+    result["buy_signals"] = len([s for s in signals if s['side'] == 'BUY'])
+    result["sell_signals"] = len([s for s in signals if s['side'] == 'SELL'])
     
     return result
 
+
+def is_orb_hours():
+    """Check if current time is within ORB hours (9:20 AM to 3:15 PM IST) and weekday"""
+    now = datetime.datetime.now(IST)
+    # Check if weekday (Monday=0, Friday=4)
+    if now.weekday() >= 5:  # Saturday or Sunday
+        return False
+    current_time = now.time()
+    orb_start = datetime.time(9, 20)   # 9:20 AM
+    orb_end = datetime.time(15, 15)    # 3:15 PM
+    return orb_start <= current_time <= orb_end
+
+
+def main():
+    """
+    Main Loop:
+    1. Checks if within market hours (9:20 AM - 3:15 PM).
+    2. Runs the scan every 60 seconds (INTERVAL).
+    3. Maintains a set of stocks that already triggered a breakout to avoid duplicates.
+    """
+    INTERVAL = 60
+    triggered_stocks = set()
+    
+    logger.info(f"🚀 Starting Continuous ORB Detection Service")
+    logger.info(f"⏰ ORB Hours: 9:20 AM - 3:15 PM IST")
+    logger.info(f"⏱️ Interval: {INTERVAL} seconds")
+    logger.info("🛑 Press Ctrl+C to stop")
+    
+    # Store the day to reset triggered_stocks on a new day
+    current_day = datetime.datetime.now(IST).date()
+    
+    while True:
+        try:
+            now_ist = datetime.datetime.now(IST)
+            
+            # Reset triggered stocks if day changed
+            if now_ist.date() > current_day:
+                logger.info("� New day detected, resetting triggered stocks list.")
+                triggered_stocks.clear()
+                current_day = now_ist.date()
+            
+            if is_orb_hours():
+                logger.info(f"⏰ Scanning at {now_ist.strftime('%H:%M:%S')}...")
+                
+                # Filter out already triggered stocks
+                stocks_to_scan = [s for s in NIFTY_200_SYMBOLS if s not in triggered_stocks]
+                
+                if not stocks_to_scan:
+                    logger.info("✅ All stocks have already triggered. Sleeping...")
+                else:
+                    logger.info(f"� Scanning {len(stocks_to_scan)} stocks (Remaining)")
+                    
+                    # Run the scan
+                    result = run_opening_range_breakout(stocks_to_scan)
+                    
+                    # Add newly triggered stocks to the triggered_stocks set
+                    new_triggers = 0
+                    for signal in result.get('signals', []):
+                        if signal['symbol'] not in triggered_stocks:
+                            triggered_stocks.add(signal['symbol'])
+                            new_triggers += 1
+                    
+                    # Log summary of this run
+                    if result['signals_count'] > 0:
+                        logger.info(f"Found {result['signals_count']} breakouts in this run.")
+                        # Save only if we found something new
+                        save_breakout_signals(result)
+                    else:
+                        logger.info("No new breakouts found.")
+                        
+                    logger.info(f"� Total unique triggered stocks today: {len(triggered_stocks)}")
+                
+                # Sleep for INTERVAL
+                logger.info(f"💤 Sleeping for {INTERVAL} seconds...")
+                time.sleep(INTERVAL)
+                
+            else:
+                # Outside market hours
+                logger.info(f"⏸️ Outside ORB hours (9:20 AM - 3:15 PM). Waiting... ({now_ist.strftime('%H:%M:%S')})")
+                time.sleep(60)
+                
+        except KeyboardInterrupt:
+            logger.info("🛑 Stopped by user")
+            break
+        except Exception as e:
+            logger.error(f"❌ Error in main loop: {str(e)}")
+            time.sleep(60)
 
 if __name__ == "__main__":
     main()

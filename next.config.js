@@ -2,12 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  output: 'standalone', // Enable standalone output for Docker
   images: {
     domains: ['images.unsplash.com', 'via.placeholder.com'],
-  },
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   async headers() {
     return [
@@ -27,14 +23,6 @@ const nextConfig = {
             value: 'origin-when-cross-origin',
           },
         ],
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: '/api/:path*',
       },
     ];
   },

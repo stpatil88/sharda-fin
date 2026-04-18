@@ -21,7 +21,6 @@ export default function Navbar() {
     { name: 'Learn Trading', href: '/learn-trading' },
     { name: 'Demat Account', href: '/demat-account' },
     { name: 'Market News', href: '/market-news' },
-    { name: 'Market Results', href: '/market-results' },
     { name: 'Contact', href: '/contact' },
   ];
 

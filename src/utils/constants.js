@@ -1,21 +1,3 @@
-// API Configuration
-export const API_CONFIG = {
-  FINNHUB_BASE_URL: 'https://finnhub.io/api/v1',
-  NEWS_API_BASE_URL: 'https://newsapi.org/v2',
-  GNEWS_API_BASE_URL: 'https://gnews.io/api/v4',
-  NSE_API_URL: 'https://api.nseindia.com',
-  BSE_API_URL: 'https://api.bseindia.com',
-};
-
-// API Endpoints
-export const ENDPOINTS = {
-  MARKET_DATA: '/quote',
-  NEWS: '/everything',
-  TOP_GAINERS: '/top-gainers',
-  TOP_LOSERS: '/top-losers',
-  FII_DII: '/fii-dii-data',
-};
-
 // Market Symbols
 export const MARKET_SYMBOLS = {
   NIFTY: 'NIFTY',
