@@ -3,7 +3,12 @@ import FeatureUnavailable from '../components/FeatureUnavailable';
 
 export default function PastResultsPage() {
   return (
-    <Layout title="NSE Past Results - Sharada Financial Services">
+    <Layout
+      title="Past Results - Sharada Financial Services"
+      description="Company past results are temporarily unavailable in the current Vercel edition."
+      canonicalPath="/past-results"
+      noindex
+    >
       <div className="pt-16">
         <FeatureUnavailable
           title="Past Results Are Temporarily Unavailable"

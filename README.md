@@ -40,9 +40,11 @@ Create `.env.local` with:
 
 ```bash
 MARKETAUX_API_KEY=your_marketaux_key
+NEXT_PUBLIC_SITE_URL=https://www.sharadafinancial.com
 ```
 
 `MARKETAUX_API_KEY` is server-side only and should be added in Vercel project settings for production.
+`NEXT_PUBLIC_SITE_URL` keeps canonical and social URLs aligned with your production domain.
 
 ## Local Development
 

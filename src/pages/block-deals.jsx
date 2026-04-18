@@ -3,7 +3,12 @@ import FeatureUnavailable from '../components/FeatureUnavailable';
 
 export default function BlockDealsPage() {
   return (
-    <Layout title="Block Deals - Sharada Financial Services">
+    <Layout
+      title="Block Deals - Sharada Financial Services"
+      description="Block deals are temporarily unavailable in the current Vercel edition."
+      canonicalPath="/block-deals"
+      noindex
+    >
       <div className="pt-16">
         <FeatureUnavailable
           title="Block Deals Are Temporarily Unavailable"

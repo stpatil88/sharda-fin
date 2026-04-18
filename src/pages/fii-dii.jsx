@@ -3,7 +3,12 @@ import FeatureUnavailable from '../components/FeatureUnavailable';
 
 export default function FIIDIIPage() {
   return (
-    <Layout title="FII/DII Data - Sharada Financial Services">
+    <Layout
+      title="FII DII Data - Sharada Financial Services"
+      description="FII and DII data are temporarily unavailable in the current Vercel edition."
+      canonicalPath="/fii-dii"
+      noindex
+    >
       <div className="pt-16">
         <FeatureUnavailable
           title="FII/DII Data Is Temporarily Unavailable"

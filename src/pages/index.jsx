@@ -7,7 +7,11 @@ import MarketNews from '../components/MarketNews';
 
 export default function Home() {
   return (
-    <Layout title="Sharada Financial Services - Empowering Smart Investments">
+    <Layout
+      title="Sharada Financial Services | Market News, Demat Account, Financial Services"
+      description="Explore Indian market news, demat account guidance, and financial services from Sharada Financial Services to support smarter investing."
+      canonicalPath="/"
+    >
       <Hero />
       <About />
       <Services />

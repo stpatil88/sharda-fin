@@ -3,7 +3,12 @@ import FeatureUnavailable from '../components/FeatureUnavailable';
 
 export default function BulkDealsPage() {
   return (
-    <Layout title="Bulk Deals - Sharada Financial Services">
+    <Layout
+      title="Bulk Deals - Sharada Financial Services"
+      description="Bulk deals are temporarily unavailable in the current Vercel edition."
+      canonicalPath="/bulk-deals"
+      noindex
+    >
       <div className="pt-16">
         <FeatureUnavailable
           title="Bulk Deals Are Temporarily Unavailable"

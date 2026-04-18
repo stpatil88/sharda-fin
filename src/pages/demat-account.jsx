@@ -27,7 +27,11 @@ export default function DematAccountPage() {
   ];
 
   return (
-    <Layout title="Open Demat Account - Sharada Financial Services">
+    <Layout
+      title="Open Demat Account | Sharada Financial Services"
+      description="Open a demat account with guided support from Sharada Financial Services and start your investing journey with a trusted platform."
+      canonicalPath="/demat-account"
+    >
       <div className="pt-16">
         {/* Hero Section */}
         <section className="py-20 bg-gradient-to-br from-primary-50 to-secondary-50">

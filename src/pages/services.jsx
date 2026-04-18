@@ -5,7 +5,11 @@ import FDCalculator from '../components/FDCalculator';
 
 export default function ServicesPage() {
   return (
-    <Layout title="Our Services - Sharada Financial Services">
+    <Layout
+      title="Financial Services | Demat, Mutual Funds, Insurance And Loans"
+      description="Discover Sharada Financial Services offerings including demat account support, mutual funds, insurance, loans, and practical financial calculators."
+      canonicalPath="/services"
+    >
       <div className="pt-16">
         <Services />
         
